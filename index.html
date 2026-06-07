@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Lin's valrandom · 全能随机工坊</title>
+    <title>Lin's valrandom | 今天真的很高兴。</title>
     <style>
         * {
             margin: 0;
@@ -100,7 +100,6 @@
             font-family: monospace;
         }
         
-        /* 励志轮换行 */
         .motto-line {
             display: flex;
             align-items: center;
@@ -120,7 +119,6 @@
             color: #cbd5e6;
             font-style: italic;
             letter-spacing: 0.3px;
-            transition: all 0.2s;
         }
         .motto-icon {
             font-size: 1.2rem;
@@ -128,7 +126,6 @@
             background: none;
             border: none;
             color: #ffbc6e;
-            transition: 0.2s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -142,14 +139,43 @@
             background: #ffbc6e30;
         }
 
-        @media (max-width: 550px) {
-            .banner-text { font-size: 1.3rem; letter-spacing: 2px; }
-            .author-corner { top: 0.6rem; right: 0.8rem; padding: 0.2rem 0.6rem 0.2rem 0.4rem; }
-            .author-avatar { width: 24px; height: 24px; }
-            .author-name { font-size: 0.7rem; }
-            .motto-text { font-size: 0.7rem; }
+        .control-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
-
+        .count-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15,20,35,0.6);
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+        }
+        .count-control label {
+            font-size: 0.85rem;
+        }
+        .count-control input {
+            background: #0f1424;
+            border: 1px solid #4a5c7c;
+            border-radius: 1rem;
+            padding: 0.3rem 0.6rem;
+            color: white;
+            width: 70px;
+        }
+        .btn-custom {
+            background: #5f4790;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
         .remark-area {
             display: flex;
             justify-content: center;
@@ -166,16 +192,10 @@
             font-family: inherit;
             font-size: 0.9rem;
             text-align: center;
-            transition: 0.2s;
         }
         .remark-input:focus {
             outline: none;
             border-color: #ffbc6e;
-            box-shadow: 0 0 6px rgba(255,188,110,0.3);
-        }
-        .remark-input::placeholder {
-            color: #8e9fc3;
-            font-style: italic;
         }
 
         .action-bar {
@@ -235,7 +255,6 @@
             border-radius: 2rem;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: 0.2s;
             color: #eef4ff;
             border-bottom: 2px solid #7085b0;
         }
@@ -244,7 +263,7 @@
             transform: translateY(-2px);
         }
         .result-panel {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0,0,0,0.3);
             border-radius: 1.2rem;
             padding: 1rem;
             margin: 1rem 0;
@@ -255,108 +274,6 @@
             font-size: 1.3rem;
             font-weight: 600;
             color: #ffdd99;
-            word-break: break-word;
-        }
-        .random-number-panel {
-            text-align: center;
-            padding: 0.5rem;
-        }
-        .random-number-panel input {
-            background: #0f1424;
-            border: 1px solid #4a5c7c;
-            padding: 0.4rem 0.8rem;
-            border-radius: 1rem;
-            color: white;
-            width: 100px;
-            text-align: center;
-            margin: 0 0.5rem;
-        }
-        .random-number-panel button {
-            background: #ff7b4a;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 2rem;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            margin-left: 0.5rem;
-        }
-        .rand-result {
-            margin-top: 0.8rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #ffdd99;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.2s;
-        }
-        .modal-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        .modal-card {
-            background: #141c2c;
-            border-radius: 2rem;
-            padding: 1.5rem;
-            width: 300px;
-            border: 1px solid #ffcf8e;
-            box-shadow: 0 25px 40px black;
-        }
-        .modal-card h3 {
-            text-align: center;
-            margin-bottom: 1rem;
-            color: #ffd966;
-        }
-        .role-input {
-            display: flex;
-            justify-content: space-between;
-            margin: 0.8rem 0;
-            align-items: center;
-        }
-        .role-input label {
-            font-weight: 600;
-        }
-        .role-input input {
-            width: 70px;
-            background: #0f1422;
-            border: 1px solid #4a5c7c;
-            padding: 0.3rem;
-            border-radius: 1rem;
-            color: white;
-            text-align: center;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1.5rem;
-            gap: 1rem;
-        }
-        .modal-buttons button {
-            flex: 1;
-            padding: 0.5rem;
-            border-radius: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-        }
-        .confirm-team {
-            background: #ff7b4a;
-            color: white;
-        }
-        .cancel-team {
-            background: #3c4b6e;
         }
         .cards-grid {
             display: grid;
@@ -370,7 +287,6 @@
             border-radius: 1.5rem;
             border: 1px solid rgba(255,180,100,0.3);
             padding: 1rem;
-            transition: 0.2s;
             position: relative;
         }
         .card-side {
@@ -406,7 +322,7 @@
             color: #f3f9ff;
         }
         .challenge-block {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0,0,0,0.4);
             border-radius: 1rem;
             padding: 0.6rem;
             font-size: 0.8rem;
@@ -420,7 +336,78 @@
             text-align: center;
             padding: 3rem;
             color: #8fa2cc;
-            grid-column: 1/-1;
+        }
+        .history-panel, .custom-adjust-panel {
+            background: rgba(15, 20, 35, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            padding: 1rem;
+            margin-top: 2rem;
+            border: 1px solid #ffbc6e40;
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid #3a4565;
+            padding-bottom: 0.5rem;
+        }
+        .panel-header h3 {
+            font-size: 1.1rem;
+            color: #ffdd99;
+        }
+        .history-list, .favourites-list {
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .history-item, .fav-item {
+            background: #0f1424;
+            border-radius: 1rem;
+            padding: 0.5rem 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .history-info, .fav-info {
+            flex: 1;
+            cursor: pointer;
+            color: #cbd5e6;
+        }
+        .history-info:hover, .fav-info:hover {
+            color: #ffbc6e;
+        }
+        .btn-icon {
+            background: #2a2f3f;
+            border: none;
+            border-radius: 1rem;
+            padding: 0.2rem 0.6rem;
+            color: #eef4ff;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+        .btn-icon:hover {
+            background: #ff7b4a;
+        }
+        .custom-textarea {
+            width: 100%;
+            background: #0f1424;
+            border: 1px solid #4a5c7c;
+            border-radius: 1rem;
+            padding: 0.8rem;
+            color: #eef4ff;
+            font-family: inherit;
+            font-size: 0.85rem;
+            resize: vertical;
+            margin-top: 0.5rem;
         }
         footer {
             text-align: center;
@@ -430,18 +417,61 @@
             border-top: 1px solid #232e44;
             padding-top: 1rem;
         }
-        .flex-buttons {
-            display: flex;
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            align-items: center;
             justify-content: center;
-            gap: 1rem;
+            z-index: 200;
+        }
+        .modal-card {
+            background: #141c2c;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            width: 320px;
+            border: 1px solid #ffcf8e;
+        }
+        .modal-card h3 {
+            text-align: center;
+            color: #ffd966;
             margin-bottom: 1rem;
+        }
+        .modal-card input, .modal-card select, .modal-card textarea {
+            width: 100%;
+            background: #0f1424;
+            border: 1px solid #4a5c7c;
+            border-radius: 1rem;
+            padding: 0.4rem;
+            color: white;
+            margin-bottom: 0.8rem;
+        }
+        .modal-card button {
+            background: #ff7b4a;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 2rem;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+        }
+        /* 按钮闪烁效果 */
+        @keyframes flash {
+            0% { background-color: #2a554b; }
+            50% { background-color: #6fbf6f; }
+            100% { background-color: #2a554b; }
+        }
+        .btn-flash {
+            animation: flash 0.4s ease-in-out;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="author-corner">
-        <img class="author-avatar" src="https://s3.bmp.ovh/2026/06/07/uxmqGfg7.png" alt="avatar" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%20fill%3D%22%23ffaa55%22%2F%3E%3C%2Fsvg%3E'">
+        <img class="author-avatar" src="https://s3.bmp.ovh/2026/06/07/uxmqGfg7.png" alt="avatar">
         <div class="author-name">📌 <span>@BeiMing257</span></div>
     </div>
 
@@ -450,20 +480,25 @@
         <div class="banner-text">🎲 随机小工具 🎲</div>
     </div>
 
-    <!-- 轮换语句行 + 循环图标 -->
     <div class="motto-line">
         <span class="motto-text" id="mottoText">I know I'm STILL SHINING</span>
-        <button class="motto-icon" id="cycleMottoBtn" title="切换语句">🔄</button>
+        <button class="motto-icon" id="cycleMottoBtn">🔄</button>
     </div>
 
-    <!-- 备注文本框（全局） -->
     <div class="remark-area">
         <input type="text" id="globalRemark" class="remark-input" placeholder="备注/批注区（请输入文本）">
     </div>
 
-    <!-- 原有挑战按钮组 -->
+    <div class="control-bar">
+        <div class="count-control">
+            <label>🎲 生成数量：</label>
+            <input type="number" id="randomCountInput" min="1" max="10" value="5" step="1">
+        </div>
+        <button id="openCustomBtn" class="btn-custom">➕ 自定义挑战</button>
+    </div>
+
     <div class="action-bar">
-        <button id="simpleRandomBtn" class="btn btn-gray">✨ 随机5种方案 ✨</button>
+        <button id="simpleRandomBtn" class="btn btn-gray">✨ 随机生成 ✨</button>
         <button id="teamRandomBtn" class="btn btn-team">👥 团队随机 👥</button>
     </div>
 
@@ -471,17 +506,15 @@
         <button id="switchSideBtn" class="btn-switch">🔄 攻防转换 🔄</button>
     </div>
 
-    <!-- 三个独立工具按钮 -->
     <div class="tool-bar">
         <button id="randomNumberBtn" class="btn-tool">🎲 随机数</button>
         <button id="randomWeaponBtn" class="btn-tool">🔫 随机武器</button>
         <button id="randomHeroBtn" class="btn-tool">🦸 随机英雄</button>
     </div>
 
-    <!-- 结果显示区域（包含动态切换的随机数面板和纯文本结果） -->
     <div id="resultPanel" class="result-panel" style="display: none;">
         <div id="resultText" class="result-text">✨ 点击上方按钮 ✨</div>
-        <div id="randomNumberPanel" class="random-number-panel" style="display: none;">
+        <div id="randomNumberPanel" style="display: none; text-align:center;">
             <div>
                 <span>最小值：</span>
                 <input type="number" id="randMinInput" value="1">
@@ -489,46 +522,88 @@
                 <input type="number" id="randMaxInput" value="100">
                 <button id="confirmRandBtn">生成</button>
             </div>
-            <div id="randDisplay" class="rand-result">—</div>
+            <div id="randDisplay" style="margin-top:0.8rem;">—</div>
         </div>
     </div>
 
-    <!-- 挑战卡片容器 -->
     <div id="cardsContainer" class="cards-grid">
         <div class="empty-state">⚔️ 点击上方按钮开始生成挑战 ⚔️</div>
     </div>
 
-    <footer>
-        都是凛拓川干的！ ©2010-现在 禁止使用采集数据和转载商业化
-    </footer>
+    <div class="history-panel">
+        <div class="panel-header">
+            <h3>📜 历史记录</h3>
+            <button id="clearHistoryBtn" class="btn-icon" style="background:#4a3b5e;">清空历史</button>
+        </div>
+        <div id="historyList" class="history-list"><div style="color:#8e9fc3;">暂无记录</div></div>
+    </div>
+    
+    <div class="history-panel">
+        <div class="panel-header">
+            <h3>⭐ 我的收藏</h3>
+            <button id="clearFavBtn" class="btn-icon" style="background:#4a3b5e;">清空收藏</button>
+        </div>
+        <div id="favouritesList" class="history-list"><div style="color:#8e9fc3;">暂无收藏</div></div>
+    </div>
+
+    <div class="custom-adjust-panel">
+        <div class="panel-header">
+            <h3>📝 自定义调整内容</h3>
+            <button id="saveAdjustBtn" class="btn-icon" style="background:#2a554b;">保存</button>
+        </div>
+        <textarea id="customAdjustText" class="custom-textarea" rows="4" placeholder="在这里写下你的自定义调整规则、战术笔记或任何想记录的内容...（自动保存至本地）"></textarea>
+        <div style="font-size:0.7rem; color:#8e9fc3; margin-top:0.3rem;">内容会自动保存到浏览器，下次打开仍在。</div>
+    </div>
+
+    <footer>都是凛拓川干的！ ©2010-现在 禁止使用采集数据和转载商业化</footer>
 </div>
 
-<!-- 团队配置模态框 -->
-<div id="teamModal" class="modal-overlay">
+<div id="teamModal" class="modal">
     <div class="modal-card">
-        <h3>🎯 配置团队角色数量</h3>
-        <div class="role-input"><label>🔥 决斗者</label><input type="number" id="duelistCount" min="0" value="1" step="1"></div>
-        <div class="role-input"><label>🔍 先锋</label><input type="number" id="initiatorCount" min="0" value="1" step="1"></div>
-        <div class="role-input"><label>☁️ 控场者</label><input type="number" id="controllerCount" min="0" value="1" step="1"></div>
-        <div class="role-input"><label>🛡️ 哨卫</label><input type="number" id="sentinelCount" min="0" value="1" step="1"></div>
-        <div class="modal-buttons">
-            <button id="confirmTeamBtn" class="confirm-team">立即随机</button>
-            <button id="cancelTeamBtn" class="cancel-team">取消</button>
+        <h3>🎯 配置团队数量</h3>
+        <div style="display:flex; gap:0.5rem; margin-bottom:1rem; justify-content:space-between;">
+            <input type="number" id="randomTeamSize" min="1" max="10" value="5" style="width:80px;">
+            <button id="randomTeamBtn" style="background:#ff7b4a; padding:0.2rem 0.8rem;">随机阵容</button>
+        </div>
+        <div><label>🔥 决斗者</label><input type="number" id="duelistCount" min="0" value="1"></div>
+        <div><label>🔍 先锋</label><input type="number" id="initiatorCount" min="0" value="1"></div>
+        <div><label>☁️ 控场者</label><input type="number" id="controllerCount" min="0" value="1"></div>
+        <div><label>🛡️ 哨卫</label><input type="number" id="sentinelCount" min="0" value="1"></div>
+        <div style="display:flex; gap:1rem; margin-top:1rem;">
+            <button id="confirmTeamBtn">立即随机</button>
+            <button id="cancelTeamBtn" style="background:#3c4b6e;">取消</button>
         </div>
     </div>
 </div>
 
+<div id="customModal" class="modal">
+    <div class="modal-card">
+        <h3>➕ 添加自定义挑战</h3>
+        <input type="text" id="customName" placeholder="挑战名称 (例: 禁止开镜)">
+        <textarea id="customDesc" rows="2" placeholder="挑战描述"></textarea>
+        <select id="customDifficulty">
+            <option value="普通">普通</option>
+            <option value="地狱">地狱</option>
+            <option value="娱乐">娱乐</option>
+        </select>
+        <button id="saveCustomBtn">保存</button>
+        <button id="closeCustomBtn" style="background:#3c4b6e; margin-top:0.5rem;">取消</button>
+        <hr style="margin:1rem 0; border-color:#4a5c7c;">
+        <h4>📋 已有自定义</h4>
+        <div id="customList" style="max-height:150px; overflow-y:auto; font-size:0.8rem;"></div>
+    </div>
+</div>
+
 <script>
-    // ---------- 英雄池（官方正确名称，共28位）----------
+    // ---------- 英雄池 ----------
     const AGENTS_BY_ROLE = {
-        duelist: ["捷风", "不死鸟", "雷兹", "蕾娜", "夜露", "霓虹", "壹决", "幻棱"],
+        duelist: ["捷风", "不死鸟", "雷兹", "芮娜", "夜露", "霓虹", "壹决", "幻棱"],
         initiator: ["猎枭", "铁臂", "斯凯", "K/O", "黑梦", "盖可", "钛狐"],
         controller: ["幽影", "蝰蛇", "炼狱", "星礈", "海神", "暮蝶", "迷核"],
         sentinel: ["贤者", "零", "奇乐", "尚勃勒", "钢锁", "维斯"]
     };
     const ALL_AGENTS = [...AGENTS_BY_ROLE.duelist, ...AGENTS_BY_ROLE.initiator, ...AGENTS_BY_ROLE.controller, ...AGENTS_BY_ROLE.sentinel];
 
-    // 武器库（国服译名）—— 已将“制式手枪”改为“标配”
     const WEAPONS = [
         "标配 (Classic)", "短炮 (Shorty)", "狂怒 (Frenzy)", "鬼魅 (Ghost)", "正义 (Sheriff)",
         "蜂刺 (Stinger)", "骇灵 (Spectre)", "雄鹿 (Bucky)", "判官 (Judge)", "獠犬 (Bulldog)",
@@ -536,154 +611,136 @@
         "冥驹 (Operator)", "战神 (Ares)", "奥丁 (Odin)"
     ];
 
-    // 挑战库（已删除“润滑剂”）
-    const CHALLENGES_DB = [
-        { name: "🤫 幽灵静步", desc: "全程禁止奔跑 (Shift静步移动)，暴露脚步声即挑战失败。", weight: 4 },
-        { name: "📄 纸片人", desc: "禁止购买任何护甲 (轻甲/重甲均不可)，且禁止治疗/护盾技能。", weight: 4 },
-        { name: "🤐 沉默刺客", desc: "禁用所有技能 (Q/E/C/X)，仅靠枪法与身法。", weight: 4 },
-        { name: "🐇 禁跃契约", desc: "整场比赛禁止按下跳跃键 (空格禁用)，走地流。", weight: 3 },
-        { name: "🧎 蹲姿禁令", desc: "禁止使用下蹲 (Ctrl禁用)，永远站立对枪。", weight: 3 },
-        { name: "🔄 强制换弹症", desc: "每次击杀后必须立刻换弹 (哪怕弹匣还剩30发)。", weight: 3 },
-        { name: "🔫 禁止右键", desc: "不能使用鼠标右键 (不能开镜、枪托攻击)，腰射到底。", weight: 3 },
-        { name: "🧱 贴墙特工", desc: "必须时刻贴墙移动，暴露在空旷地带不能超过2秒。", weight: 4 },
-        { name: "⏳ 杀戮惩罚", desc: "每击杀一人必须原地蹲下5秒不能移动 (无法操作方向键)。", weight: 3 },
-        { name: "💣 拆蛋专家", desc: "进攻方：下包前不能开枪；防守方：炸弹安装后10秒内必须开始拆包，否则失败。", weight: 3 },
-        { name: "👥 连体婴", desc: "整局跟随一名随机队友行动，他去哪你去哪，绝不单走。", weight: 4 },
-        { name: "🏆 谦逊姿态", desc: "己方大比分领先(≥4分)时，禁用全部投掷道具 (闪光/烟/手雷)。", weight: 3 },
-        { name: "📦 弹药匮乏", desc: "每个弹匣打完前禁止换弹，必须打空才可换。", weight: 3 },
-        { name: "🕋 定点炮台", desc: "每回合必须在一个区域内坚守15秒以上才能转移位置。", weight: 3 },
-        { name: "🌪️ 狂战士", desc: "不能静步，全程奔跑，永远保持移动开火。", weight: 3 },
-        { name: "🎭 模仿大师", desc: "每回合开始时，必须模仿队内随机一名队友所使用的主武器。", weight: 2 },
-        { name: "⚡ 无甲大枪", desc: "全程0护甲 + 必须起价格≥2900的主战武器 (暴徒/幻影/冥驹等)。", weight: 2 },
-        { name: "🎲 轮盘赌徒", desc: "每回合强制更换武器类型 (手枪→冲锋→步枪→狙击→机枪循环)。", weight: 2 },
-        { name: "⛔ 换弹定身", desc: "换弹期间不能移动分毫，换弹结束才可走位。", weight: 3 },
-        { name: "🌀 道具僵直", desc: "每使用一次道具，接下来三秒固定原地不动。", weight: 3 },
-        { name: "🔁 三杀轮换", desc: "每击杀三名敌人，下一回合强制更换武器品类。", weight: 2 },
-        { name: "👶 保爹行动", desc: "跟随队内血量最低队友行动，全程贴身不远离。", weight: 3 },
-        { name: "💰 貔貅存钱", desc: "经济溢出多余资金不消费不发枪，全程存钱不买装备 (只能用初始或捡的)。", weight: 1 },
-        { name: "☁️ 烟中恶鬼", desc: "烟雾未消散绝不踏入烟内，等烟完全消失再进点。", weight: 3 },
-        { name: "🔇 电台静默", desc: "禁止使用语音/文字聊天报点，只能依靠小地图和游戏内信号。", weight: 2 },
-        { name: "🚶 单人成军", desc: "禁止与队友处于同一屏幕视野内超过5秒，必须分开作战。", weight: 2 },
-        { name: "🧠 先读大师", desc: "每回合前20秒必须原地不动观察小地图，之后才能移动。", weight: 3 },
-        { name: "🔄 镜像复制", desc: "每回合必须使用敌方上一回合击杀你的那把武器。", weight: 2 },
-        { name: "🩹 医疗禁断", desc: "禁止使用任何治疗技能、治疗球或血包，只能自然回血。", weight: 3 },
-        { name: "⏱️ 极速枪神", desc: "从接触敌人开始必须在5秒内完成击杀，否则必须撤退。", weight: 3 },
-        { name: "🔪 刀光剑影", desc: "每场对局必须用近战武器至少完成一次击杀。", weight: 2 },
-        { name: "🧩 技能轮空", desc: "每回合只能使用一个技能（Q/E/C中任选一个，X大招可用），用完后本回合不能再放其他技能。", weight: 3 },
-        { name: "🕺 跳舞机", desc: "每次击杀后必须在原地按ADAD左右晃动2秒，才能继续移动。", weight: 2 },
-        { name: "🧿 无UI模式", desc: "禁止看小地图、血条、弹药量、技能图标等所有HUD元素。", weight: 2 },
-        { name: "🔄 死亡换枪", desc: "死亡后下一回合必须使用击杀者的武器类型。", weight: 2 },
-        { name: "🛌 睡梦罗汉", desc: "每回合开局前15秒必须站在原地不动（可以蹲下）。", weight: 2 },
-        { name: "🧱 掩体依赖", desc: "每次对枪时身体必须紧贴掩体（露出≤50%身体），否则挑战失败。", weight: 3 },
-        { name: "📢 千里传音", desc: "每次射击前必须先按语音喊出“我要开枪了”。", weight: 2 },
-        { name: "🧠 逆向思维", desc: "整局游戏准星不准放在敌人身上超过0.5秒，必须甩枪击杀。", weight: 3 },
-        { name: "🚫 禁止跳跃射击", desc: "跳跃中射击造成伤害则挑战失败（落地后才可开枪）。", weight: 2 },
-        { name: "🧩 技能绑定", desc: "每次使用技能后必须立即换弹（哪怕弹匣是满的）。", weight: 2 },
-        { name: "🕶️ 隐身斗篷", desc: "永远不能率先开枪，必须等敌人先开枪你才可以反击。", weight: 2 },
-        { name: "📍 移动炮台", desc: "每回合必须在一个区域内坚守15秒以上才能转移位置。", weight: 2 },
-        { name: "🔄 子弹轮回", desc: "每次击杀后必须切换至副武器射击一次再切回主武器。", weight: 2 },
-        { name: "🎭 角色扮演", desc: "模仿所选英雄的背景故事性格（如贤者不能先杀生，捷风必须冲第一）。", weight: 2 },
-        { name: "📦 弹药节约", desc: "每个弹匣最多只能射出10发子弹，打完10发必须换弹（不管击杀与否）。", weight: 2 },
-        { name: "🔪 处决者", desc: "用手枪打残敌人后，必须切刀完成最后一击。", weight: 2 },
-        { name: "🧩 无效技能", desc: "每回合随机禁用自己一个技能（抽签决定，不能用）。", weight: 2 },
-        { name: "📢 喇叭战士", desc: "全程不能静音，必须开最大音量脚步和枪声。", weight: 2 },
-        { name: "🚶 跟随弹道", desc: "腰射时必须边走边射，禁止站着不动腰射。", weight: 2 },
-        { name: "🎲 随机主武器", desc: "每回合主武器由系统随机决定。", weight: 2 },
-        { name: "🧱 掩体跳跃", desc: "每次换弹时必须跳出掩体（离开掩体换弹）。", weight: 2 },
-        { name: "📢 战术广播", desc: "每次移动前必须大喊“我移动了”。", weight: 2 },
-        { name: "🧠 预瞄强迫症", desc: "准星必须永远放在爆头线高度，不能低。", weight: 2 },
-        { name: "🔦 光照不足", desc: "禁止使用任何照亮敌方位置的技能（如猎枭探测箭、斯凯鸟等）。", weight: 2 },
-        { name: "🎭 沉默互换", desc: "每死一次，必须更换一位英雄的玩法风格。", weight: 2 },
-        { name: "🔄 武器轮盘", desc: "每回合必须更换主武器类型，不可重复。", weight: 2 },
-        { name: "🧹 零购买护甲", desc: "整局游戏不准买护甲，只能用初始0甲。", weight: 2 },
-        { name: "📢 自我解说", desc: "每次击杀必须大喊“爆头！”或“击杀了！”。", weight: 2 },
-        { name: "🚶 后退射击", desc: "每次开枪时必须按S后退，不能前进射击。", weight: 2 },
-        { name: "🧩 大招禁断", desc: "整局游戏不准使用X键大招。", weight: 3 },
-        { name: "📍 定点蹲守", desc: "每回合必须选择一个固定位置蹲守至少20秒。", weight: 2 },
-        { name: "🔪 刀战狂热", desc: "至少一回合全程只用近战（刀）。", weight: 1 },
-        { name: "🎲 经济破产", desc: "每回合结束必须花光所有钱（可以给队友发枪）。", weight: 2 }
+    // 基础挑战库（已删除“保爹行动”）
+    const BASE_CHALLENGES = [
+        { name: "🤫 幽灵静步", desc: "全程禁止奔跑，暴露脚步声即失败。", weight: 4, difficulty: "普通" },
+        { name: "📄 纸片人", desc: "禁止购买任何护甲，禁止治疗/护盾技能。", weight: 4, difficulty: "普通" },
+        { name: "🤐 沉默刺客", desc: "禁用所有技能 (Q/E/C/X)，仅靠枪法。", weight: 4, difficulty: "地狱" },
+        { name: "🐇 禁跃契约", desc: "整场比赛禁止按下跳跃键。", weight: 3, difficulty: "普通" },
+        { name: "🧎 蹲姿禁令", desc: "禁止使用下蹲，永远站立对枪。", weight: 3, difficulty: "普通" },
+        { name: "🔄 强制换弹症", desc: "每次击杀后必须立刻换弹。", weight: 3, difficulty: "普通" },
+        { name: "🔫 禁止右键", desc: "不能使用鼠标右键 (不能开镜/枪托)。", weight: 3, difficulty: "普通" },
+        { name: "🧱 贴墙特工", desc: "必须时刻贴墙移动，空旷地带≤2秒。", weight: 4, difficulty: "普通" },
+        { name: "⏳ 杀戮惩罚", desc: "每击杀一人必须原地蹲下5秒。", weight: 3, difficulty: "地狱" },
+        { name: "💣 拆蛋专家", desc: "进攻方下包前不能开枪；防守方拆包时限10秒。", weight: 3, difficulty: "普通" },
+        { name: "👥 连体婴", desc: "整局跟随一名随机队友行动。", weight: 4, difficulty: "娱乐" },
+        { name: "🏆 谦逊姿态", desc: "大比分领先时禁用投掷道具。", weight: 3, difficulty: "普通" },
+        { name: "📦 弹药匮乏", desc: "每个弹匣打完前禁止换弹。", weight: 3, difficulty: "普通" },
+        { name: "🕋 定点炮台", desc: "每回合必须在一个区域坚守15秒以上。", weight: 3, difficulty: "普通" },
+        { name: "🌪️ 狂战士", desc: "不能静步，全程奔跑移动开火。", weight: 3, difficulty: "地狱" },
+        { name: "🎭 模仿大师", desc: "每回合模仿队内随机一名队友的主武器。", weight: 2, difficulty: "娱乐" },
+        { name: "⚡ 无甲大枪", desc: "0护甲 + 必须起≥2900的主战武器。", weight: 2, difficulty: "地狱" },
+        { name: "🎲 轮盘赌徒", desc: "每回合强制更换武器类型循环。", weight: 2, difficulty: "娱乐" },
+        { name: "⛔ 换弹定身", desc: "换弹期间不能移动。", weight: 3, difficulty: "普通" },
+        { name: "🌀 道具僵直", desc: "每使用道具，接下来三秒原地不动。", weight: 3, difficulty: "地狱" },
+        { name: "🔁 三杀轮换", desc: "每击杀三名敌人，下回合更换武器品类。", weight: 2, difficulty: "普通" },
+        { name: "💰 貔貅存钱", desc: "经济溢出不消费，只用初始或捡枪。", weight: 1, difficulty: "娱乐" },
+        { name: "☁️ 烟中恶鬼", desc: "烟雾未消散绝不踏入烟内。", weight: 3, difficulty: "普通" },
+        { name: "🔇 电台静默", desc: "禁止报点，只靠小地图。", weight: 2, difficulty: "普通" },
+        { name: "🚶 单人成军", desc: "禁止与队友同一视野超5秒。", weight: 2, difficulty: "地狱" },
+        { name: "🧠 先读大师", desc: "每回合前20秒原地不动看地图。", weight: 3, difficulty: "普通" },
+        { name: "🩹 医疗禁断", desc: "禁止任何治疗效果。", weight: 3, difficulty: "地狱" },
+        { name: "⏱️ 极速枪神", desc: "接触敌人5秒内必须击杀否则撤退。", weight: 3, difficulty: "地狱" },
+        { name: "🔪 刀光剑影", desc: "每局至少一次近战击杀。", weight: 2, difficulty: "娱乐" },
+        { name: "🧩 技能轮空", desc: "每回合只能用一个技能。", weight: 3, difficulty: "普通" },
+        { name: "🕺 跳舞机", desc: "击杀后原地ADAD晃动2秒。", weight: 2, difficulty: "娱乐" },
+        { name: "🧿 无UI模式", desc: "禁止看小地图/血条等HUD。", weight: 2, difficulty: "地狱" },
+        { name: "🔄 死亡换枪", desc: "死亡后下回合必须用击杀者的武器。", weight: 2, difficulty: "普通" },
+        { name: "🛌 睡梦罗汉", desc: "每回合开局前15秒原地不动。", weight: 2, difficulty: "娱乐" },
+        { name: "🧱 掩体依赖", desc: "对枪时身体≤50%露出。", weight: 3, difficulty: "普通" },
+        { name: "📢 千里传音", desc: "射击前喊“我要开枪了”。", weight: 2, difficulty: "娱乐" },
+        { name: "🧠 逆向思维", desc: "准星不准放在敌人身上超0.5秒。", weight: 3, difficulty: "地狱" },
+        { name: "🚫 禁止跳跃射击", desc: "跳跃中射击则失败。", weight: 2, difficulty: "普通" },
+        { name: "🧩 技能绑定", desc: "使用技能后立即换弹。", weight: 2, difficulty: "普通" },
+        { name: "🕶️ 隐身斗篷", desc: "永远不能率先开枪。", weight: 2, difficulty: "地狱" },
+        { name: "📍 移动炮台", desc: "坚守15秒才能转移位置。", weight: 2, difficulty: "普通" },
+        { name: "🔄 子弹轮回", desc: "击杀后切副武器射击一次再切回。", weight: 2, difficulty: "普通" },
+        { name: "🎭 角色扮演", desc: "模仿英雄背景性格。", weight: 2, difficulty: "娱乐" },
+        { name: "📦 弹药节约", desc: "每匣最多射10发子弹。", weight: 2, difficulty: "普通" },
+        { name: "🔪 处决者", desc: "手枪打残后切刀完成最后一击。", weight: 2, difficulty: "娱乐" },
+        { name: "🧩 无效技能", desc: "每回合随机禁用自己一个技能。", weight: 2, difficulty: "地狱" },
+        { name: "📢 喇叭战士", desc: "全程最大音量脚步/枪声。", weight: 2, difficulty: "娱乐" },
+        { name: "🚶 跟随弹道", desc: "腰射时必须边走边射。", weight: 2, difficulty: "普通" },
+        { name: "🎲 随机主武器", desc: "每回合主武器随机。", weight: 2, difficulty: "娱乐" },
+        { name: "🧱 掩体跳跃", desc: "换弹时必须跳出掩体。", weight: 2, difficulty: "普通" },
+        { name: "📢 战术广播", desc: "移动前大喊“我移动了”。", weight: 2, difficulty: "娱乐" },
+        { name: "🧠 预瞄强迫症", desc: "准星永远放爆头线。", weight: 2, difficulty: "普通" },
+        { name: "🔦 光照不足", desc: "禁用照亮敌方技能。", weight: 2, difficulty: "普通" },
+        { name: "🎭 沉默互换", desc: "每死一次更换英雄玩法风格。", weight: 2, difficulty: "娱乐" },
+        { name: "🔄 武器轮盘", desc: "每回合换主武器类型不可重复。", weight: 2, difficulty: "普通" },
+        { name: "🧹 零购买护甲", desc: "不准买护甲，初始0甲。", weight: 2, difficulty: "地狱" },
+        { name: "📢 自我解说", desc: "击杀大喊“爆头！”等。", weight: 2, difficulty: "娱乐" },
+        { name: "🚶 后退射击", desc: "开枪时按S后退。", weight: 2, difficulty: "普通" },
+        { name: "🧩 大招禁断", desc: "整局不准用X大招。", weight: 3, difficulty: "普通" },
+        { name: "📍 定点蹲守", desc: "每回合固定位置蹲守20秒。", weight: 2, difficulty: "普通" },
+        { name: "🔪 刀战狂热", desc: "至少一回合只用刀。", weight: 1, difficulty: "娱乐" },
+        { name: "🎲 经济破产", desc: "每回合花光所有钱。", weight: 2, difficulty: "娱乐" }
     ];
 
-    // 加权随机抽取（不重复）
-    function getWeightedRandomUnique(challengeList, count) {
-        if (count > challengeList.length) count = challengeList.length;
-        const pool = [...challengeList];
-        const result = [];
-        for (let i = 0; i < count; i++) {
-            let totalWeight = pool.reduce((s, c) => s + c.weight, 0);
-            let rand = Math.random() * totalWeight;
-            let acc = 0;
-            let selectedIndex = 0;
-            for (let j = 0; j < pool.length; j++) {
-                acc += pool[j].weight;
-                if (rand <= acc) {
-                    selectedIndex = j;
-                    break;
-                }
-            }
-            result.push(pool[selectedIndex]);
-            pool.splice(selectedIndex, 1);
+    let customChallenges = [];
+    function loadCustom() {
+        try {
+            const stored = localStorage.getItem("valRandom_custom");
+            if(stored) customChallenges = JSON.parse(stored);
+        } catch(e) {}
+    }
+    function saveCustom() {
+        localStorage.setItem("valRandom_custom", JSON.stringify(customChallenges));
+    }
+    function addCustomChallenge(name, desc, difficulty) {
+        if(!name.trim()) return;
+        customChallenges.push({ name: name.trim(), desc: desc.trim(), weight: 2, difficulty: difficulty });
+        saveCustom();
+        renderCustomList();
+    }
+    function deleteCustomChallenge(index) {
+        customChallenges.splice(index,1);
+        saveCustom();
+        renderCustomList();
+    }
+    function renderCustomList() {
+        const container = document.getElementById("customList");
+        if(!container) return;
+        if(customChallenges.length===0) {
+            container.innerHTML = "<div style='color:#8e9fc3;'>暂无自定义挑战</div>";
+            return;
         }
-        return result;
+        let html = "";
+        customChallenges.forEach((ch, idx) => {
+            html += `<div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
+                        <span style="flex:1;">${ch.name} (${ch.difficulty})</span>
+                        <button class="btn-icon" data-delidx="${idx}">🗑️</button>
+                    </div>`;
+        });
+        container.innerHTML = html;
+        document.querySelectorAll("[data-delidx]").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const idx = parseInt(btn.getAttribute("data-delidx"));
+                deleteCustomChallenge(idx);
+            });
+        });
     }
 
-    function getRandomWeapon() {
-        return WEAPONS[Math.floor(Math.random() * WEAPONS.length)];
+    function getFullChallengeDB() {
+        return [...BASE_CHALLENGES, ...customChallenges];
     }
 
-    // 简单模式
-    function generateSimple() {
-        const heroes = [];
-        for(let i=0; i<5; i++) heroes.push(ALL_AGENTS[Math.floor(Math.random() * ALL_AGENTS.length)]);
-        currentSimpleCards = heroes.map(hero => ({
-            hero: hero,
-            weapon: getRandomWeapon(),
-            challenge: CHALLENGES_DB[Math.floor(Math.random() * CHALLENGES_DB.length)]
-        }));
-        currentMode = "simple";
-        switchWrapper.style.display = "none";
-        render();
-        const resultPanel = document.getElementById("resultPanel");
-        if(resultPanel) resultPanel.style.display = "none";
-    }
-
-    // 团队模式
-    function generateTeamFromModal(duelist, init, controller, sentinel) {
-        let heroes = [];
-        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-        for(let i=0;i<duelist;i++) heroes.push(pick(AGENTS_BY_ROLE.duelist));
-        for(let i=0;i<init;i++) heroes.push(pick(AGENTS_BY_ROLE.initiator));
-        for(let i=0;i<controller;i++) heroes.push(pick(AGENTS_BY_ROLE.controller));
-        for(let i=0;i<sentinel;i++) heroes.push(pick(AGENTS_BY_ROLE.sentinel));
-        if(heroes.length === 0) { alert("请至少选择一个角色！"); return false; }
-
-        const attackChallenges = getWeightedRandomUnique(CHALLENGES_DB, heroes.length);
-        const defendChallenges = getWeightedRandomUnique(CHALLENGES_DB, heroes.length);
-
-        const teamCards = heroes.map((hero, idx) => ({
-            hero: hero,
-            currentSide: "attack",
-            attackStrategy: { weapon: getRandomWeapon(), challenge: attackChallenges[idx] },
-            defendStrategy: { weapon: getRandomWeapon(), challenge: defendChallenges[idx] }
-        }));
-        currentTeamCards = teamCards;
-        currentMode = "team";
-        switchWrapper.style.display = "flex";
-        render();
-        const resultPanel = document.getElementById("resultPanel");
-        if(resultPanel) resultPanel.style.display = "none";
-        return true;
-    }
-
-    function switchSide() {
-        if (currentMode !== "team" || currentTeamCards.length === 0) return;
-        for (let card of currentTeamCards) {
-            card.currentSide = (card.currentSide === "attack") ? "defend" : "attack";
+    function getRandomChallenge() {
+        const pool = getFullChallengeDB();
+        if(pool.length === 0) return { name: "无挑战", desc: "请添加自定义挑战", difficulty: "普通" };
+        let totalWeight = pool.reduce((s,c)=>s+(c.weight||2),0);
+        let rand = Math.random() * totalWeight;
+        let acc = 0;
+        for(let c of pool) {
+            acc += (c.weight||2);
+            if(rand <= acc) return c;
         }
-        render();
+        return pool[0];
     }
 
-    // 渲染挑战卡片
+    function getRandomWeapon() { return WEAPONS[Math.floor(Math.random() * WEAPONS.length)]; }
+
+    // 核心状态
     let currentMode = "simple";
     let currentTeamCards = [];
     let currentSimpleCards = [];
@@ -694,19 +751,13 @@
     function render() {
         if (currentMode === "simple") {
             if (!currentSimpleCards.length) {
-                container.innerHTML = `<div class="empty-state">✨ 点击“随机5种方案”生成 ✨</div>`;
+                container.innerHTML = `<div class="empty-state">✨ 点击“随机生成” ✨</div>`;
                 return;
             }
             let html = "";
             currentSimpleCards.forEach((card) => {
-                html += `
-                    <div class="challenge-card">
-                        <div class="card-side">🎲 通用挑战</div>
-                        <div class="hero-name">${escapeHtml(card.hero)}</div>
-                        <div class="weapon-block"><div class="weapon-name">🔫 ${escapeHtml(card.weapon)}</div></div>
-                        <div class="challenge-block"><div class="challenge-name">⚡ ${escapeHtml(card.challenge.name)}</div><div>${escapeHtml(card.challenge.desc)}</div></div>
-                    </div>
-                `;
+                const challengeName = `${card.challenge.name} (${card.challenge.difficulty})`;
+                html += `<div class="challenge-card"><div class="card-side">🎲 通用挑战</div><div class="hero-name">${escapeHtml(card.hero)}</div><div class="weapon-block"><div class="weapon-name">🔫 ${escapeHtml(card.weapon)}</div></div><div class="challenge-block"><div class="challenge-name">⚡ ${escapeHtml(challengeName)}</div><div>${escapeHtml(card.challenge.desc)}</div></div></div>`;
             });
             container.innerHTML = html;
         } else {
@@ -718,114 +769,303 @@
             currentTeamCards.forEach((item) => {
                 let sideLabel = (item.currentSide === "attack") ? "⚔️ 进攻策略" : "🛡️ 防守策略";
                 let strategy = (item.currentSide === "attack") ? item.attackStrategy : item.defendStrategy;
-                html += `
-                    <div class="challenge-card">
-                        <div class="card-side">${sideLabel}</div>
-                        <div class="hero-name">${escapeHtml(item.hero)}</div>
-                        <div class="weapon-block"><div class="weapon-name">🔫 ${escapeHtml(strategy.weapon)}</div></div>
-                        <div class="challenge-block"><div class="challenge-name">⚠️ ${escapeHtml(strategy.challenge.name)}</div><div>${escapeHtml(strategy.challenge.desc)}</div></div>
-                    </div>
-                `;
+                const challengeName = `${strategy.challenge.name} (${strategy.challenge.difficulty})`;
+                html += `<div class="challenge-card"><div class="card-side">${sideLabel}</div><div class="hero-name">${escapeHtml(item.hero)}</div><div class="weapon-block"><div class="weapon-name">🔫 ${escapeHtml(strategy.weapon)}</div></div><div class="challenge-block"><div class="challenge-name">⚠️ ${escapeHtml(challengeName)}</div><div>${escapeHtml(strategy.challenge.desc)}</div></div></div>`;
             });
             container.innerHTML = html;
         }
     }
 
-    function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
 
-    // ----- 工具函数（随机数、武器、英雄）-----
+    function generateSimple(count) {
+        const heroes = [];
+        for(let i=0; i<count; i++) heroes.push(ALL_AGENTS[Math.floor(Math.random() * ALL_AGENTS.length)]);
+        const cards = heroes.map(hero => ({
+            hero: hero,
+            weapon: getRandomWeapon(),
+            challenge: getRandomChallenge()
+        }));
+        currentSimpleCards = cards;
+        currentMode = "simple";
+        switchWrapper.style.display = "none";
+        render();
+        document.getElementById("resultPanel").style.display = "none";
+        addHistoryRecord(cards);
+    }
+
+    function generateTeamFromModal(duel, init, cont, sent) {
+        let heroes = [];
+        const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+        for(let i=0;i<duel;i++) heroes.push(pick(AGENTS_BY_ROLE.duelist));
+        for(let i=0;i<init;i++) heroes.push(pick(AGENTS_BY_ROLE.initiator));
+        for(let i=0;i<cont;i++) heroes.push(pick(AGENTS_BY_ROLE.controller));
+        for(let i=0;i<sent;i++) heroes.push(pick(AGENTS_BY_ROLE.sentinel));
+        if(heroes.length===0) { alert("至少选一个角色"); return false; }
+        const fullPool = getFullChallengeDB();
+        const attackChallenges = [...fullPool].sort(()=>0.5-Math.random()).slice(0, heroes.length);
+        const defendChallenges = [...fullPool].sort(()=>0.5-Math.random()).slice(0, heroes.length);
+        currentTeamCards = heroes.map((h,idx) => ({
+            hero:h, currentSide:"attack",
+            attackStrategy:{ weapon: getRandomWeapon(), challenge: attackChallenges[idx] },
+            defendStrategy:{ weapon: getRandomWeapon(), challenge: defendChallenges[idx] }
+        }));
+        for(let i=currentTeamCards.length-1;i>0;i--) {
+            const j=Math.floor(Math.random()*(i+1));
+            [currentTeamCards[i], currentTeamCards[j]] = [currentTeamCards[j], currentTeamCards[i]];
+        }
+        currentMode="team";
+        switchWrapper.style.display="flex";
+        render();
+        document.getElementById("resultPanel").style.display="none";
+        return true;
+    }
+
+    function switchSide() {
+        if(currentMode!=="team") return;
+        for(let c of currentTeamCards) c.currentSide = c.currentSide==="attack"?"defend":"attack";
+        render();
+    }
+
+    // 历史记录与收藏夹
+    let historyRecords = [];
+    let favourites = [];
+    let nextId = 1;
+    function loadStorage() {
+        try {
+            const h = localStorage.getItem("valRandom_history");
+            if(h) historyRecords = JSON.parse(h);
+            const f = localStorage.getItem("valRandom_favs");
+            if(f) favourites = JSON.parse(f);
+            const id = localStorage.getItem("valRandom_nextId");
+            if(id) nextId = parseInt(id);
+        } catch(e) {}
+    }
+    function saveStorage() {
+        localStorage.setItem("valRandom_history", JSON.stringify(historyRecords));
+        localStorage.setItem("valRandom_favs", JSON.stringify(favourites));
+        localStorage.setItem("valRandom_nextId", nextId);
+    }
+    function addHistoryRecord(cards) {
+        const record = { id: nextId++, timestamp: Date.now(), count: cards.length, cards: cards.map(c => ({ hero: c.hero, weapon: c.weapon, challenge: c.challenge })) };
+        historyRecords.unshift(record);
+        if(historyRecords.length > 30) historyRecords.pop();
+        saveStorage();
+        renderHistory();
+        return record;
+    }
+    function deleteHistoryRecord(id) {
+        historyRecords = historyRecords.filter(r => r.id !== id);
+        saveStorage();
+        renderHistory();
+    }
+    function addFavourite(record) {
+        if(favourites.some(f => f.recordId === record.id)) return;
+        favourites.push({ id: nextId++, recordId: record.id, timestamp: Date.now(), cards: record.cards });
+        saveStorage();
+        renderFavourites();
+    }
+    function removeFavourite(favId) {
+        favourites = favourites.filter(f => f.id !== favId);
+        saveStorage();
+        renderFavourites();
+    }
+    function renderHistory() {
+        const container = document.getElementById("historyList");
+        if(!container) return;
+        if(historyRecords.length === 0) { container.innerHTML = '<div style="color:#8e9fc3;">暂无记录</div>'; return; }
+        let html = "";
+        historyRecords.forEach(rec => {
+            const date = new Date(rec.timestamp).toLocaleTimeString();
+            html += `<div class="history-item"><div class="history-info" data-id="${rec.id}">📋 ${date} (${rec.count}个)</div><button class="btn-icon fav-btn" data-id="${rec.id}">❤️</button><button class="btn-icon del-btn" data-id="${rec.id}">🗑️</button></div>`;
+        });
+        container.innerHTML = html;
+        document.querySelectorAll(".history-info").forEach(el => {
+            el.addEventListener("click", (e) => {
+                const id = parseInt(el.getAttribute("data-id"));
+                const rec = historyRecords.find(r => r.id === id);
+                if(rec) {
+                    currentSimpleCards = rec.cards.map(c => ({ hero: c.hero, weapon: c.weapon, challenge: c.challenge }));
+                    currentMode = "simple";
+                    switchWrapper.style.display = "none";
+                    render();
+                    document.getElementById("resultPanel").style.display = "none";
+                }
+            });
+        });
+        document.querySelectorAll(".fav-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.getAttribute("data-id"));
+                const rec = historyRecords.find(r => r.id === id);
+                if(rec) addFavourite(rec);
+            });
+        });
+        document.querySelectorAll(".del-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.getAttribute("data-id"));
+                deleteHistoryRecord(id);
+            });
+        });
+    }
+    function renderFavourites() {
+        const container = document.getElementById("favouritesList");
+        if(!container) return;
+        if(favourites.length === 0) { container.innerHTML = '<div style="color:#8e9fc3;">暂无收藏</div>'; return; }
+        let html = "";
+        favourites.forEach(fav => {
+            const date = new Date(fav.timestamp).toLocaleTimeString();
+            html += `<div class="fav-item"><div class="fav-info" data-favid="${fav.id}">⭐ ${date} (${fav.cards.length}个)</div><button class="btn-icon unfav-btn" data-favid="${fav.id}">💔</button></div>`;
+        });
+        container.innerHTML = html;
+        document.querySelectorAll(".fav-info").forEach(el => {
+            el.addEventListener("click", (e) => {
+                const favId = parseInt(el.getAttribute("data-favid"));
+                const fav = favourites.find(f => f.id === favId);
+                if(fav) {
+                    currentSimpleCards = fav.cards.map(c => ({ hero: c.hero, weapon: c.weapon, challenge: c.challenge }));
+                    currentMode = "simple";
+                    switchWrapper.style.display = "none";
+                    render();
+                    document.getElementById("resultPanel").style.display = "none";
+                }
+            });
+        });
+        document.querySelectorAll(".unfav-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const favId = parseInt(btn.getAttribute("data-favid"));
+                removeFavourite(favId);
+            });
+        });
+    }
+
+    // 自定义调整内容保存与加载（静默保存，无弹窗，只闪烁按钮）
+    const customAdjustTextarea = document.getElementById("customAdjustText");
+    const saveAdjustBtn = document.getElementById("saveAdjustBtn");
+    function loadCustomAdjust() {
+        const saved = localStorage.getItem("valRandom_customAdjust");
+        if(saved !== null) customAdjustTextarea.value = saved;
+        else customAdjustTextarea.value = "";
+    }
+    function saveCustomAdjust() {
+        localStorage.setItem("valRandom_customAdjust", customAdjustTextarea.value);
+        // 添加闪烁效果，无弹窗
+        saveAdjustBtn.classList.add("btn-flash");
+        setTimeout(() => {
+            saveAdjustBtn.classList.remove("btn-flash");
+        }, 400);
+    }
+    saveAdjustBtn.addEventListener("click", () => {
+        saveCustomAdjust();
+    });
+    customAdjustTextarea.addEventListener("blur", () => {
+        localStorage.setItem("valRandom_customAdjust", customAdjustTextarea.value);
+        // 失去焦点自动保存时不闪烁，保持安静
+    });
+
+    // 事件绑定
+    document.getElementById("simpleRandomBtn").onclick = () => {
+        let count = parseInt(document.getElementById("randomCountInput").value) || 5;
+        if(count<1) count=1; if(count>10) count=10;
+        generateSimple(count);
+    };
+    document.getElementById("teamRandomBtn").onclick = () => document.getElementById("teamModal").style.display = "flex";
+    document.getElementById("cancelTeamBtn").onclick = () => document.getElementById("teamModal").style.display = "none";
+    document.getElementById("confirmTeamBtn").onclick = () => {
+        let d=parseInt(document.getElementById("duelistCount").value)||0;
+        let i=parseInt(document.getElementById("initiatorCount").value)||0;
+        let c=parseInt(document.getElementById("controllerCount").value)||0;
+        let s=parseInt(document.getElementById("sentinelCount").value)||0;
+        if(generateTeamFromModal(d,i,c,s)) document.getElementById("teamModal").style.display = "none";
+    };
+    document.getElementById("randomTeamBtn").onclick = () => {
+        let total = parseInt(document.getElementById("randomTeamSize").value);
+        if(total<=0) return;
+        let d=Math.floor(Math.random()*(total+1));
+        let rem=total-d;
+        let i=Math.floor(Math.random()*(rem+1));
+        rem-=i;
+        let c=Math.floor(Math.random()*(rem+1));
+        let s=rem-c;
+        document.getElementById("duelistCount").value=d;
+        document.getElementById("initiatorCount").value=i;
+        document.getElementById("controllerCount").value=c;
+        document.getElementById("sentinelCount").value=s;
+    };
+    document.getElementById("switchSideBtn").onclick = switchSide;
+    document.getElementById("clearHistoryBtn").onclick = () => { historyRecords = []; saveStorage(); renderHistory(); };
+    document.getElementById("clearFavBtn").onclick = () => { favourites = []; saveStorage(); renderFavourites(); };
+
+    // 随机数/武器/英雄工具
     const resultPanel = document.getElementById("resultPanel");
     const resultTextDiv = document.getElementById("resultText");
     const randomNumberPanelDiv = document.getElementById("randomNumberPanel");
-    const randDisplay = document.getElementById("randDisplay");
-
-    function showResultPanel() {
-        resultPanel.style.display = "block";
-    }
-
+    function showResultPanel() { resultPanel.style.display = "block"; }
     function randomWeapon() {
         randomNumberPanelDiv.style.display = "none";
         resultTextDiv.style.display = "block";
-        const weapon = WEAPONS[Math.floor(Math.random() * WEAPONS.length)];
-        resultTextDiv.innerHTML = `🔫 随机武器 → <strong>${escapeHtml(weapon)}</strong>`;
+        resultTextDiv.innerHTML = `🔫 随机武器 → <strong>${escapeHtml(WEAPONS[Math.floor(Math.random()*WEAPONS.length)])}</strong>`;
         showResultPanel();
     }
-
     function randomHero() {
         randomNumberPanelDiv.style.display = "none";
         resultTextDiv.style.display = "block";
-        const hero = ALL_AGENTS[Math.floor(Math.random() * ALL_AGENTS.length)];
-        resultTextDiv.innerHTML = `🦸 随机英雄 → <strong>${escapeHtml(hero)}</strong>`;
+        resultTextDiv.innerHTML = `🦸 随机英雄 → <strong>${escapeHtml(ALL_AGENTS[Math.floor(Math.random()*ALL_AGENTS.length)])}</strong>`;
         showResultPanel();
     }
-
     function showRandomNumberPanel() {
         randomNumberPanelDiv.style.display = "block";
         resultTextDiv.style.display = "none";
-        randDisplay.innerHTML = "—";
+        document.getElementById("randDisplay").innerHTML = "—";
         showResultPanel();
     }
-
     function generateRandomNumber() {
-        let minVal = parseInt(document.getElementById("randMinInput").value);
-        let maxVal = parseInt(document.getElementById("randMaxInput").value);
-        if (isNaN(minVal)) minVal = 1;
-        if (isNaN(maxVal)) maxVal = 100;
-        if (minVal > maxVal) [minVal, maxVal] = [maxVal, minVal];
-        const rand = Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
-        randDisplay.innerHTML = `🎲 随机结果：<strong style="font-size:1.4rem;">${rand}</strong> (范围 ${minVal} ~ ${maxVal})`;
+        let min = parseInt(document.getElementById("randMinInput").value)||1;
+        let max = parseInt(document.getElementById("randMaxInput").value)||100;
+        if(min>max)[min,max]=[max,min];
+        let val = Math.floor(Math.random()*(max-min+1))+min;
+        document.getElementById("randDisplay").innerHTML = `🎲 结果：<strong>${val}</strong> (${min}~${max})`;
     }
+    document.getElementById("randomNumberBtn").onclick = showRandomNumberPanel;
+    document.getElementById("randomWeaponBtn").onclick = randomWeapon;
+    document.getElementById("randomHeroBtn").onclick = randomHero;
+    document.getElementById("confirmRandBtn").onclick = generateRandomNumber;
 
-    // 绑定工具按钮
-    document.getElementById("randomNumberBtn").addEventListener("click", showRandomNumberPanel);
-    document.getElementById("randomWeaponBtn").addEventListener("click", randomWeapon);
-    document.getElementById("randomHeroBtn").addEventListener("click", randomHero);
-    document.getElementById("confirmRandBtn").addEventListener("click", generateRandomNumber);
+    // 自定义挑战模态框
+    const customModal = document.getElementById("customModal");
+    document.getElementById("openCustomBtn").onclick = () => {
+        renderCustomList();
+        customModal.style.display = "flex";
+    };
+    document.getElementById("closeCustomBtn").onclick = () => customModal.style.display = "none";
+    document.getElementById("saveCustomBtn").onclick = () => {
+        const name = document.getElementById("customName").value;
+        const desc = document.getElementById("customDesc").value;
+        const diff = document.getElementById("customDifficulty").value;
+        if(!name.trim()) { alert("请输入挑战名称"); return; }
+        addCustomChallenge(name, desc, diff);
+        document.getElementById("customName").value = "";
+        document.getElementById("customDesc").value = "";
+        alert("已添加自定义挑战");
+    };
+    customModal.onclick = (e) => { if(e.target === customModal) customModal.style.display = "none"; };
 
-    // 原有事件绑定
-    const modal = document.getElementById("teamModal");
-    const teamBtn = document.getElementById("teamRandomBtn");
-    const simpleBtn = document.getElementById("simpleRandomBtn");
-    const confirmTeam = document.getElementById("confirmTeamBtn");
-    const cancelTeam = document.getElementById("cancelTeamBtn");
+    // 轮换语句
+    const mottoList = ["I know I'm STILL SHINING","存档 读档 升级 这就是人生","情绪总被左右，好像忘记了什么","战斗力已经拉满，但还是忘了什么","Dizzy問題とかどうする？点Pとかどうする？","最高で最強！","加强霓虹！！！！！！！！！！","没关系的错就错吧"];
+    let mottoIdx = 0;
+    const mottoEl = document.getElementById("mottoText");
+    document.getElementById("cycleMottoBtn").onclick = () => { mottoIdx = (mottoIdx+1)%mottoList.length; mottoEl.innerText = mottoList[mottoIdx]; };
+    mottoEl.innerText = mottoList[0];
 
-    teamBtn.addEventListener("click", () => modal.classList.add("active"));
-    cancelTeam.addEventListener("click", () => modal.classList.remove("active"));
-    confirmTeam.addEventListener("click", () => {
-        const duel = parseInt(document.getElementById("duelistCount").value) || 0;
-        const init = parseInt(document.getElementById("initiatorCount").value) || 0;
-        const cont = parseInt(document.getElementById("controllerCount").value) || 0;
-        const sent = parseInt(document.getElementById("sentinelCount").value) || 0;
-        if (generateTeamFromModal(duel, init, cont, sent)) modal.classList.remove("active");
-    });
-    simpleBtn.addEventListener("click", generateSimple);
-    switchBtn.addEventListener("click", switchSide);
-
-    // 初始加载随机方案
-    generateSimple();
-
-    // ---- 轮换语句功能 ----
-    const mottoList = [
-        "I know I'm STILL SHINING",
-        "存档 读档 升级 这就是人生",
-        "情绪总被左右，好像忘记了什么",
-        "战斗力已经拉满，但还是忘了什么",
-        "Dizzy問題とかどうする？点Pとかどうする？",
-        "最高で最強！",
-        "加强霓虹！！！！！！！！！！",
-        "没关系的错就错吧"
-    ];
-    let mottoIndex = 0;
-    const mottoTextEl = document.getElementById("mottoText");
-    const cycleBtn = document.getElementById("cycleMottoBtn");
-    function updateMotto() {
-        mottoTextEl.textContent = mottoList[mottoIndex];
-    }
-    cycleBtn.addEventListener("click", () => {
-        mottoIndex = (mottoIndex + 1) % mottoList.length;
-        updateMotto();
-    });
-    updateMotto();
+    // 初始化
+    loadStorage();
+    loadCustom();
+    loadCustomAdjust();
+    renderHistory();
+    renderFavourites();
+    generateSimple(5);
 </script>
 </body>
 </html>
