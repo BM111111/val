@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Lin's valrandom | 今天真的很高兴。</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -99,7 +100,7 @@
             color: #fff3cf;
             font-family: monospace;
         }
-        
+
         .motto-line {
             display: flex;
             align-items: center;
@@ -139,6 +140,84 @@
             background: #ffbc6e30;
         }
 
+        .room-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 0.5rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        .room-input {
+            background: #0f1424;
+            border: 1px solid #ffbc6e;
+            border-radius: 2rem;
+            padding: 0.4rem 1rem;
+            color: white;
+            width: 200px;
+            text-align: center;
+        }
+        .room-status {
+            color: #ffbc6e;
+            font-size: 0.85rem;
+            align-self: center;
+        }
+        .btn-room {
+            background: linear-gradient(135deg, #4a6fa5, #2c3e66);
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 3rem;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-room:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #5e7fb5, #3a4c7c);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+        }
+
+        .remark-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 0 0 1.2rem 0;
+            flex-wrap: wrap;
+        }
+        .remark-input {
+            width: 100%;
+            max-width: 450px;
+            background: #0f1424;
+            border: 1px solid #4a5c7c;
+            border-radius: 2rem;
+            padding: 0.6rem 1.2rem;
+            color: #eef4ff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .remark-save-btn {
+            background: #4caf50;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .remark-save-btn:hover {
+            background: #6fbf6f;
+            transform: scale(1.02);
+        }
+
         .control-bar {
             display: flex;
             flex-wrap: wrap;
@@ -167,7 +246,7 @@
             width: 70px;
         }
         .btn-custom {
-            background: #5f4790;
+            background: #ff8c00;
             border: none;
             padding: 0.4rem 1rem;
             border-radius: 2rem;
@@ -175,27 +254,11 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 0.85rem;
+            transition: 0.2s;
         }
-        .remark-area {
-            display: flex;
-            justify-content: center;
-            margin: 0 0 1.2rem 0;
-        }
-        .remark-input {
-            width: 100%;
-            max-width: 500px;
-            background: #0f1424;
-            border: 1px solid #4a5c7c;
-            border-radius: 2rem;
-            padding: 0.6rem 1.2rem;
-            color: #eef4ff;
-            font-family: inherit;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-        .remark-input:focus {
-            outline: none;
-            border-color: #ffbc6e;
+        .btn-custom:hover {
+            background: #ffa333;
+            transform: scale(1.02);
         }
 
         .action-bar {
@@ -225,21 +288,40 @@
             transform: translateY(-2px);
         }
         .btn-team {
-            background: #3b2c4a;
-            color: #f0dbff;
-            border-bottom: 2px solid #b77eff;
+            background: #ff8c00;
+            color: white;
+            border-bottom: 2px solid #cc7000;
         }
         .btn-team:hover {
-            background: #5f4790;
+            background: #ffa333;
+            transform: translateY(-2px);
+        }
+
+        .switch-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 0.5rem 0 1rem;
         }
         .btn-switch {
-            background: #2a554b;
-            color: #ccf7ee;
+            background: linear-gradient(135deg, #ff7e5e, #feb47b);
+            color: white;
             border: none;
-            padding: 0.5rem 1.2rem;
-            font-size: 0.85rem;
-            margin-top: 1rem;
+            padding: 0.6rem 1.8rem;
+            border-radius: 3rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(255, 126, 94, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
+        .btn-switch:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(255, 126, 94, 0.6);
+        }
+
         .tool-bar {
             display: flex;
             flex-wrap: wrap;
@@ -262,6 +344,43 @@
             background: #2f3e64;
             transform: translateY(-2px);
         }
+
+        /* 广播面板（始终显示） */
+        .broadcast-panel {
+            background: rgba(15, 20, 35, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            padding: 0.8rem 1rem;
+            margin: 1rem 0;
+            border: 1px solid #ffbc6e40;
+        }
+        .broadcast-title {
+            font-size: 0.8rem;
+            color: #ffdd99;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .broadcast-list {
+            max-height: 120px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            font-size: 0.75rem;
+        }
+        .broadcast-item {
+            color: #cbd5e6;
+            padding: 0.2rem 0;
+            border-bottom: 1px dashed #3a4565;
+        }
+        .broadcast-time {
+            color: #8e9fc3;
+            font-size: 0.6rem;
+            margin-left: 0.5rem;
+        }
+
         .result-panel {
             background: rgba(0,0,0,0.3);
             border-radius: 1.2rem;
@@ -457,7 +576,6 @@
             cursor: pointer;
             width: 100%;
         }
-        /* 按钮闪烁效果 */
         @keyframes flash {
             0% { background-color: #2a554b; }
             50% { background-color: #6fbf6f; }
@@ -465,6 +583,18 @@
         }
         .btn-flash {
             animation: flash 0.4s ease-in-out;
+        }
+        .random-number-panel input, .random-number-panel button {
+            background: #0f1424;
+            border: 1px solid #4a5c7c;
+            border-radius: 1rem;
+            padding: 0.4rem 0.8rem;
+            color: white;
+        }
+        .random-number-panel button {
+            background: #ff7b4a;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -485,8 +615,15 @@
         <button class="motto-icon" id="cycleMottoBtn">🔄</button>
     </div>
 
-    <div class="remark-area">
+    <div class="room-bar">
+        <input type="text" id="roomInput" class="room-input" placeholder="房间号 (例如: myroom)">
+        <button id="joinRoomBtn" class="btn-room">🏠 创建/加入房间</button>
+        <span id="roomStatus" class="room-status"></span>
+    </div>
+
+    <div class="remark-wrapper">
         <input type="text" id="globalRemark" class="remark-input" placeholder="备注/批注区（请输入文本）">
+        <button id="saveRemarkBtn" class="remark-save-btn">💾 保存</button>
     </div>
 
     <div class="control-bar">
@@ -502,7 +639,7 @@
         <button id="teamRandomBtn" class="btn btn-team">👥 团队随机 👥</button>
     </div>
 
-    <div class="flex-buttons" id="switchButtonWrapper" style="display: none;">
+    <div id="switchWrapper" class="switch-wrapper" style="display: none;">
         <button id="switchSideBtn" class="btn-switch">🔄 攻防转换 🔄</button>
     </div>
 
@@ -512,9 +649,15 @@
         <button id="randomHeroBtn" class="btn-tool">🦸 随机英雄</button>
     </div>
 
+    <!-- 广播面板（始终显示） -->
+    <div id="broadcastPanel" class="broadcast-panel">
+        <div class="broadcast-title">📢 实时动态</div>
+        <div id="broadcastList" class="broadcast-list">等待操作……</div>
+    </div>
+
     <div id="resultPanel" class="result-panel" style="display: none;">
         <div id="resultText" class="result-text">✨ 点击上方按钮 ✨</div>
-        <div id="randomNumberPanel" style="display: none; text-align:center;">
+        <div id="randomNumberPanel" class="random-number-panel" style="display: none; text-align:center;">
             <div>
                 <span>最小值：</span>
                 <input type="number" id="randMinInput" value="1">
@@ -563,7 +706,7 @@
         <h3>🎯 配置团队数量</h3>
         <div style="display:flex; gap:0.5rem; margin-bottom:1rem; justify-content:space-between;">
             <input type="number" id="randomTeamSize" min="1" max="10" value="5" style="width:80px;">
-            <button id="randomTeamBtn" style="background:#ff7b4a; padding:0.2rem 0.8rem;">随机阵容</button>
+            <button id="randomTeamBtn" style="background:#ff8c00; padding:0.2rem 0.8rem; border:none; border-radius:1.5rem; color:white; cursor:pointer;">随机阵容</button>
         </div>
         <div><label>🔥 决斗者</label><input type="number" id="duelistCount" min="0" value="1"></div>
         <div><label>🔍 先锋</label><input type="number" id="initiatorCount" min="0" value="1"></div>
@@ -595,7 +738,7 @@
 </div>
 
 <script>
-    // ---------- 英雄池 ----------
+    // ========== 英雄池 ==========
     const AGENTS_BY_ROLE = {
         duelist: ["捷风", "不死鸟", "雷兹", "芮娜", "夜露", "霓虹", "壹决", "幻棱"],
         initiator: ["猎枭", "铁臂", "斯凯", "K/O", "黑梦", "盖可", "钛狐"],
@@ -611,7 +754,7 @@
         "冥驹 (Operator)", "战神 (Ares)", "奥丁 (Odin)"
     ];
 
-    // 基础挑战库（已删除“保爹行动”）
+    // 基础挑战库（完整版）
     const BASE_CHALLENGES = [
         { name: "🤫 幽灵静步", desc: "全程禁止奔跑，暴露脚步声即失败。", weight: 4, difficulty: "普通" },
         { name: "📄 纸片人", desc: "禁止购买任何护甲，禁止治疗/护盾技能。", weight: 4, difficulty: "普通" },
@@ -738,6 +881,39 @@
         return pool[0];
     }
 
+    function getWeightedRandomUnique(pool, count) {
+        if (count > pool.length) count = pool.length;
+        let result = [];
+        let remaining = [...pool];
+        for (let i = 0; i < count; i++) {
+            let totalWeight = remaining.reduce((s,c)=>s+(c.weight||2),0);
+            let rand = Math.random() * totalWeight;
+            let acc = 0;
+            let selectedIndex = 0;
+            for (let j = 0; j < remaining.length; j++) {
+                acc += (remaining[j].weight||2);
+                if (rand <= acc) {
+                    selectedIndex = j;
+                    break;
+                }
+            }
+            result.push(remaining[selectedIndex]);
+            remaining.splice(selectedIndex, 1);
+        }
+        return result;
+    }
+
+    function sampleWithoutReplacement(arr, n) {
+        if (n <= 0) return [];
+        if (n >= arr.length) return [...arr];
+        const shuffled = [...arr];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, n);
+    }
+
     function getRandomWeapon() { return WEAPONS[Math.floor(Math.random() * WEAPONS.length)]; }
 
     // 核心状态
@@ -745,8 +921,21 @@
     let currentTeamCards = [];
     let currentSimpleCards = [];
     const container = document.getElementById("cardsContainer");
-    const switchWrapper = document.getElementById("switchButtonWrapper");
-    const switchBtn = document.getElementById("switchSideBtn");
+    const switchWrapper = document.getElementById("switchWrapper");
+    const broadcastListDiv = document.getElementById("broadcastList");
+
+    function addBroadcastMessage(msg) {
+        if (!broadcastListDiv) return;
+        const time = new Date().toLocaleTimeString();
+        const item = document.createElement("div");
+        item.className = "broadcast-item";
+        item.innerHTML = `<span>📢 ${escapeHtml(msg)}</span><span class="broadcast-time">${time}</span>`;
+        broadcastListDiv.prepend(item);
+        while (broadcastListDiv.children.length > 10) broadcastListDiv.removeChild(broadcastListDiv.lastChild);
+        if (broadcastListDiv.children.length === 0) {
+            broadcastListDiv.innerHTML = '<div style="color:#8e9fc3;">等待操作……</div>';
+        }
+    }
 
     function render() {
         if (currentMode === "simple") {
@@ -778,6 +967,7 @@
 
     function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
 
+    // 简单随机生成
     function generateSimple(count) {
         const heroes = [];
         for(let i=0; i<count; i++) heroes.push(ALL_AGENTS[Math.floor(Math.random() * ALL_AGENTS.length)]);
@@ -790,21 +980,44 @@
         currentMode = "simple";
         switchWrapper.style.display = "none";
         render();
-        document.getElementById("resultPanel").style.display = "none";
         addHistoryRecord(cards);
+        const msg = `✨ 生成了 ${count} 个随机挑战 ✨`;
+        addBroadcastMessage(msg);
+        if (currentRoomId) saveRoomState("simple", currentSimpleCards).then(() => broadcastToRoom(msg));
+        else broadcastToRoom(msg);
     }
 
+    // 团队随机生成
     function generateTeamFromModal(duel, init, cont, sent) {
         let heroes = [];
-        const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-        for(let i=0;i<duel;i++) heroes.push(pick(AGENTS_BY_ROLE.duelist));
-        for(let i=0;i<init;i++) heroes.push(pick(AGENTS_BY_ROLE.initiator));
-        for(let i=0;i<cont;i++) heroes.push(pick(AGENTS_BY_ROLE.controller));
-        for(let i=0;i<sent;i++) heroes.push(pick(AGENTS_BY_ROLE.sentinel));
-        if(heroes.length===0) { alert("至少选一个角色"); return false; }
+        const total = duel + init + cont + sent;
+        const isSmallTeam = total <= 5;
+
+        if (isSmallTeam) {
+            heroes.push(...sampleWithoutReplacement(AGENTS_BY_ROLE.duelist, duel));
+            heroes.push(...sampleWithoutReplacement(AGENTS_BY_ROLE.initiator, init));
+            heroes.push(...sampleWithoutReplacement(AGENTS_BY_ROLE.controller, cont));
+            heroes.push(...sampleWithoutReplacement(AGENTS_BY_ROLE.sentinel, sent));
+        } else {
+            const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+            for(let i=0;i<duel;i++) heroes.push(pick(AGENTS_BY_ROLE.duelist));
+            for(let i=0;i<init;i++) heroes.push(pick(AGENTS_BY_ROLE.initiator));
+            for(let i=0;i<cont;i++) heroes.push(pick(AGENTS_BY_ROLE.controller));
+            for(let i=0;i<sent;i++) heroes.push(pick(AGENTS_BY_ROLE.sentinel));
+        }
+
+        if(heroes.length === 0) { alert("至少选一个角色"); return false; }
+
         const fullPool = getFullChallengeDB();
-        const attackChallenges = [...fullPool].sort(()=>0.5-Math.random()).slice(0, heroes.length);
-        const defendChallenges = [...fullPool].sort(()=>0.5-Math.random()).slice(0, heroes.length);
+        let attackChallenges, defendChallenges;
+        if (isSmallTeam) {
+            attackChallenges = getWeightedRandomUnique(fullPool, heroes.length);
+            defendChallenges = getWeightedRandomUnique(fullPool, heroes.length);
+        } else {
+            attackChallenges = [...fullPool].sort(()=>0.5-Math.random()).slice(0, heroes.length);
+            defendChallenges = [...fullPool].sort(()=>0.5-Math.random()).slice(0, heroes.length);
+        }
+
         currentTeamCards = heroes.map((h,idx) => ({
             hero:h, currentSide:"attack",
             attackStrategy:{ weapon: getRandomWeapon(), challenge: attackChallenges[idx] },
@@ -815,9 +1028,12 @@
             [currentTeamCards[i], currentTeamCards[j]] = [currentTeamCards[j], currentTeamCards[i]];
         }
         currentMode="team";
-        switchWrapper.style.display="flex";
+        switchWrapper.style.display = "flex";
         render();
-        document.getElementById("resultPanel").style.display="none";
+        const msg = `👥 生成了 ${heroes.length} 人团队阵容（含攻防策略）`;
+        addBroadcastMessage(msg);
+        if (currentRoomId) saveRoomState("team", currentTeamCards).then(() => broadcastToRoom(msg));
+        else broadcastToRoom(msg);
         return true;
     }
 
@@ -825,6 +1041,11 @@
         if(currentMode!=="team") return;
         for(let c of currentTeamCards) c.currentSide = c.currentSide==="attack"?"defend":"attack";
         render();
+        const newSide = currentTeamCards[0]?.currentSide === "attack" ? "进攻" : "防守";
+        const msg = `🔄 切换到${newSide}策略`;
+        addBroadcastMessage(msg);
+        if (currentRoomId) saveRoomState("team", currentTeamCards).then(() => broadcastToRoom(msg));
+        else broadcastToRoom(msg);
     }
 
     // 历史记录与收藏夹
@@ -889,7 +1110,7 @@
                     currentMode = "simple";
                     switchWrapper.style.display = "none";
                     render();
-                    document.getElementById("resultPanel").style.display = "none";
+                    addBroadcastMessage(`📜 加载了历史记录 (${rec.count}个挑战)`);
                 }
             });
         });
@@ -928,7 +1149,7 @@
                     currentMode = "simple";
                     switchWrapper.style.display = "none";
                     render();
-                    document.getElementById("resultPanel").style.display = "none";
+                    addBroadcastMessage(`⭐ 加载了收藏记录 (${fav.cards.length}个挑战)`);
                 }
             });
         });
@@ -941,7 +1162,7 @@
         });
     }
 
-    // 自定义调整内容保存与加载（静默保存，无弹窗，只闪烁按钮）
+    // 自定义调整内容保存
     const customAdjustTextarea = document.getElementById("customAdjustText");
     const saveAdjustBtn = document.getElementById("saveAdjustBtn");
     function loadCustomAdjust() {
@@ -951,24 +1172,217 @@
     }
     function saveCustomAdjust() {
         localStorage.setItem("valRandom_customAdjust", customAdjustTextarea.value);
-        // 添加闪烁效果，无弹窗
         saveAdjustBtn.classList.add("btn-flash");
-        setTimeout(() => {
-            saveAdjustBtn.classList.remove("btn-flash");
-        }, 400);
+        setTimeout(() => saveAdjustBtn.classList.remove("btn-flash"), 400);
+        addBroadcastMessage("📝 自定义调整内容已保存");
     }
-    saveAdjustBtn.addEventListener("click", () => {
-        saveCustomAdjust();
-    });
+    saveAdjustBtn.addEventListener("click", saveCustomAdjust);
     customAdjustTextarea.addEventListener("blur", () => {
         localStorage.setItem("valRandom_customAdjust", customAdjustTextarea.value);
-        // 失去焦点自动保存时不闪烁，保持安静
     });
 
-    // 事件绑定
+    // 备注区保存/加载
+    const globalRemarkInput = document.getElementById("globalRemark");
+    const saveRemarkBtn = document.getElementById("saveRemarkBtn");
+    function loadGlobalRemark() {
+        const saved = localStorage.getItem("valRandom_globalRemark");
+        if(saved !== null) globalRemarkInput.value = saved;
+        else globalRemarkInput.value = "";
+    }
+    function saveGlobalRemark() {
+        localStorage.setItem("valRandom_globalRemark", globalRemarkInput.value);
+        addBroadcastMessage("💾 备注已保存");
+    }
+    saveRemarkBtn.addEventListener("click", saveGlobalRemark);
+    loadGlobalRemark();
+
+    // ==================== Supabase 多人房间功能 ====================
+    const SUPABASE_URL = "https://vbrbjgzltmmgjvgaonnm.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_Fd0w-wYa7Z_yTe6d9ed98A_E_WXArxi";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentRoomId = null;
+    let roomChannel = null;
+    let lastBroadcastId = 0;
+
+    async function saveRoomState(mode, data) {
+        if (!currentRoomId) return;
+        const state = { mode, data };
+        const { error } = await supabaseClient
+            .from('rooms')
+            .upsert({ id: currentRoomId, data: state, updated_at: new Date().toISOString() }, { onConflict: 'id' });
+        if (error) console.error("保存房间状态失败", error);
+    }
+
+    async function loadRoomFromSupabase(roomId) {
+        const { data, error } = await supabaseClient
+            .from('rooms')
+            .select('data, updated_at')
+            .eq('id', roomId)
+            .single();
+        if (error && error.code !== 'PGRST116') return null;
+        if (!data) return null;
+        return { data: data.data, updated_at: data.updated_at };
+    }
+
+    function applyRoomState(state) {
+        if (!state) return;
+        if (state.mode === "simple") {
+            currentSimpleCards = state.data;
+            currentMode = "simple";
+            switchWrapper.style.display = "none";
+            render();
+        } else if (state.mode === "team") {
+            currentTeamCards = state.data;
+            currentMode = "team";
+            switchWrapper.style.display = "flex";
+            render();
+        }
+    }
+
+    async function subscribeToRoom(roomId) {
+        if (roomChannel) await roomChannel.unsubscribe();
+        roomChannel = supabaseClient
+            .channel(`room-${roomId}`)
+            .on('postgres_changes', {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'rooms',
+                filter: `id=eq.${roomId}`
+            }, (payload) => {
+                if (payload.new && payload.new.data) {
+                    applyRoomState(payload.new.data);
+                }
+            })
+            .subscribe();
+    }
+
+    async function broadcastToRoom(message) {
+        if (!currentRoomId) return;
+        const broadcast = { msg: message, time: Date.now(), id: Math.random() };
+        lastBroadcastId = broadcast.id;
+        const { data: roomData } = await supabaseClient
+            .from('rooms')
+            .select('data')
+            .eq('id', currentRoomId)
+            .single();
+        const existingData = roomData?.data || { mode: "simple", data: [] };
+        await supabaseClient
+            .from('rooms')
+            .upsert({
+                id: currentRoomId,
+                data: existingData,
+                broadcast: broadcast,
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'id' });
+        // 同时自己也显示广播（已在调用处 addBroadcastMessage，但避免重复，这里不重复添加）
+    }
+
+    // 监听广播变化（单独订阅广播）
+    let broadcastChannel = null;
+    async function subscribeBroadcast(roomId) {
+        if (broadcastChannel) await broadcastChannel.unsubscribe();
+        broadcastChannel = supabaseClient
+            .channel(`broadcast-${roomId}`)
+            .on('postgres_changes', {
+                event: 'UPDATE',
+                schema: 'public',
+                table: 'rooms',
+                filter: `id=eq.${roomId}`
+            }, (payload) => {
+                if (payload.new && payload.new.broadcast && payload.new.broadcast.id !== lastBroadcastId) {
+                    addBroadcastMessage(payload.new.broadcast.msg);
+                }
+            })
+            .subscribe();
+    }
+
+    async function joinRoom(roomId) {
+        if (!roomId) return alert("请输入房间号");
+        currentRoomId = roomId;
+        document.getElementById("roomStatus").innerText = `[连接中...]`;
+        if (roomChannel) await roomChannel.unsubscribe();
+        if (broadcastChannel) await broadcastChannel.unsubscribe();
+
+        const existing = await loadRoomFromSupabase(roomId);
+        if (existing) {
+            const now = new Date();
+            const lastUpdate = new Date(existing.updated_at);
+            const diffMinutes = (now - lastUpdate) / (1000 * 60);
+            if (diffMinutes > 5) {
+                await supabaseClient.from('rooms').delete().eq('id', roomId);
+            } else {
+                applyRoomState(existing.data);
+                document.getElementById("roomStatus").innerText = `[房间 ${roomId}] 已加入`;
+                await subscribeToRoom(roomId);
+                await subscribeBroadcast(roomId);
+                addBroadcastMessage(`✅ 已加入房间 ${roomId}`);
+                return;
+            }
+        }
+
+        const count = parseInt(document.getElementById("randomCountInput").value) || 5;
+        const newIdentities = [];
+        for (let i = 0; i < count; i++) {
+            newIdentities.push({
+                hero: ALL_AGENTS[Math.floor(Math.random() * ALL_AGENTS.length)],
+                weapon: getRandomWeapon(),
+                challenge: getRandomChallenge()
+            });
+        }
+        applyRoomState({ mode: "simple", data: newIdentities });
+        await saveRoomState("simple", newIdentities);
+        document.getElementById("roomStatus").innerText = `[房间 ${roomId}] 已创建（房主）`;
+        await subscribeToRoom(roomId);
+        await subscribeBroadcast(roomId);
+        addBroadcastMessage(`🏠 创建了房间 ${roomId}，你是房主`);
+    }
+
+    document.getElementById("joinRoomBtn").onclick = () => {
+        const room = document.getElementById("roomInput").value.trim();
+        if (room) joinRoom(room);
+    };
+
+    // 随机工具
+    function randomWeapon() {
+        const weapon = WEAPONS[Math.floor(Math.random() * WEAPONS.length)];
+        const msg = `🔫 随机武器 → ${weapon}`;
+        addBroadcastMessage(msg);
+        broadcastToRoom(msg);
+    }
+    function randomHero() {
+        const hero = ALL_AGENTS[Math.floor(Math.random() * ALL_AGENTS.length)];
+        const msg = `🦸 随机英雄 → ${hero}`;
+        addBroadcastMessage(msg);
+        broadcastToRoom(msg);
+    }
+    function showRandomNumberPanel() {
+        document.getElementById("randomNumberPanel").style.display = "block";
+        document.getElementById("resultText").style.display = "none";
+        document.getElementById("randDisplay").innerHTML = "—";
+        document.getElementById("resultPanel").style.display = "block";
+    }
+    function generateRandomNumber() {
+        let min = parseInt(document.getElementById("randMinInput").value)||1;
+        let max = parseInt(document.getElementById("randMaxInput").value)||100;
+        if(min>max)[min,max]=[max,min];
+        let val = Math.floor(Math.random()*(max-min+1))+min;
+        const msg = `🎲 随机数 ${min}~${max} → ${val}`;
+        addBroadcastMessage(msg);
+        broadcastToRoom(msg);
+        document.getElementById("randDisplay").innerHTML = `🎲 结果：<strong>${val}</strong> (${min}~${max})`;
+    }
+
+    document.getElementById("randomNumberBtn").onclick = showRandomNumberPanel;
+    document.getElementById("randomWeaponBtn").onclick = randomWeapon;
+    document.getElementById("randomHeroBtn").onclick = randomHero;
+    document.getElementById("confirmRandBtn").onclick = generateRandomNumber;
+
+    // 其他事件绑定
     document.getElementById("simpleRandomBtn").onclick = () => {
         let count = parseInt(document.getElementById("randomCountInput").value) || 5;
-        if(count<1) count=1; if(count>10) count=10;
+        if (count < 1) count = 1;
+        if (count > 10) count = 10;
         generateSimple(count);
     };
     document.getElementById("teamRandomBtn").onclick = () => document.getElementById("teamModal").style.display = "flex";
@@ -978,7 +1392,8 @@
         let i=parseInt(document.getElementById("initiatorCount").value)||0;
         let c=parseInt(document.getElementById("controllerCount").value)||0;
         let s=parseInt(document.getElementById("sentinelCount").value)||0;
-        if(generateTeamFromModal(d,i,c,s)) document.getElementById("teamModal").style.display = "none";
+        generateTeamFromModal(d,i,c,s);
+        document.getElementById("teamModal").style.display = "none";
     };
     document.getElementById("randomTeamBtn").onclick = () => {
         let total = parseInt(document.getElementById("randomTeamSize").value);
@@ -998,42 +1413,6 @@
     document.getElementById("clearHistoryBtn").onclick = () => { historyRecords = []; saveStorage(); renderHistory(); };
     document.getElementById("clearFavBtn").onclick = () => { favourites = []; saveStorage(); renderFavourites(); };
 
-    // 随机数/武器/英雄工具
-    const resultPanel = document.getElementById("resultPanel");
-    const resultTextDiv = document.getElementById("resultText");
-    const randomNumberPanelDiv = document.getElementById("randomNumberPanel");
-    function showResultPanel() { resultPanel.style.display = "block"; }
-    function randomWeapon() {
-        randomNumberPanelDiv.style.display = "none";
-        resultTextDiv.style.display = "block";
-        resultTextDiv.innerHTML = `🔫 随机武器 → <strong>${escapeHtml(WEAPONS[Math.floor(Math.random()*WEAPONS.length)])}</strong>`;
-        showResultPanel();
-    }
-    function randomHero() {
-        randomNumberPanelDiv.style.display = "none";
-        resultTextDiv.style.display = "block";
-        resultTextDiv.innerHTML = `🦸 随机英雄 → <strong>${escapeHtml(ALL_AGENTS[Math.floor(Math.random()*ALL_AGENTS.length)])}</strong>`;
-        showResultPanel();
-    }
-    function showRandomNumberPanel() {
-        randomNumberPanelDiv.style.display = "block";
-        resultTextDiv.style.display = "none";
-        document.getElementById("randDisplay").innerHTML = "—";
-        showResultPanel();
-    }
-    function generateRandomNumber() {
-        let min = parseInt(document.getElementById("randMinInput").value)||1;
-        let max = parseInt(document.getElementById("randMaxInput").value)||100;
-        if(min>max)[min,max]=[max,min];
-        let val = Math.floor(Math.random()*(max-min+1))+min;
-        document.getElementById("randDisplay").innerHTML = `🎲 结果：<strong>${val}</strong> (${min}~${max})`;
-    }
-    document.getElementById("randomNumberBtn").onclick = showRandomNumberPanel;
-    document.getElementById("randomWeaponBtn").onclick = randomWeapon;
-    document.getElementById("randomHeroBtn").onclick = randomHero;
-    document.getElementById("confirmRandBtn").onclick = generateRandomNumber;
-
-    // 自定义挑战模态框
     const customModal = document.getElementById("customModal");
     document.getElementById("openCustomBtn").onclick = () => {
         renderCustomList();
@@ -1048,11 +1427,12 @@
         addCustomChallenge(name, desc, diff);
         document.getElementById("customName").value = "";
         document.getElementById("customDesc").value = "";
-        alert("已添加自定义挑战");
+        const msg = `➕ 添加了自定义挑战“${name}”`;
+        addBroadcastMessage(msg);
+        broadcastToRoom(msg);
     };
     customModal.onclick = (e) => { if(e.target === customModal) customModal.style.display = "none"; };
 
-    // 轮换语句
     const mottoList = ["I know I'm STILL SHINING","存档 读档 升级 这就是人生","情绪总被左右，好像忘记了什么","战斗力已经拉满，但还是忘了什么","Dizzy問題とかどうする？点Pとかどうする？","最高で最強！","加强霓虹！！！！！！！！！！","没关系的错就错吧"];
     let mottoIdx = 0;
     const mottoEl = document.getElementById("mottoText");
