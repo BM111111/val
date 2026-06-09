@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>关于 · @BeiMing257 | 无畏契约随机工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0b0f1a;
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', 'Roboto', sans-serif;
+            padding: 1.2rem;
+            color: #eef4ff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .about-card {
+            background: rgba(18, 28, 45, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 180, 100, 0.3);
+            padding: 2rem;
+            box-shadow: 0 20px 35px -12px black;
+            transition: transform 0.2s;
+        }
+
+        .about-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffbc6e;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #FFD966, #FF9F4A);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #ffbc6e;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #ffbc6e;
+            padding-left: 1rem;
+            font-weight: 500;
+        }
+
+        .section {
+            margin: 1.5rem 0;
+        }
+
+        .section h2 {
+            font-size: 1.2rem;
+            color: #ffdd99;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section p {
+            line-height: 1.6;
+            color: #cbd5e6;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .btn-link {
+            background: #2a2f3f;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            color: #ffdd99;
+            font-weight: bold;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-link:hover {
+            background: #3d4459;
+            transform: translateY(-2px);
+        }
+
+        /* 返回按钮独立样式，改为浅蓝色 */
+        .back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            background: rgb(64, 194, 246);
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            color: #0b0f1a;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            background: rgb(44, 174, 226);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: #5c6f97;
+            border-top: 1px solid #232e44;
+            padding-top: 1rem;
+        }
+
+        /* Toast 提示样式 */
+        .toast-tip {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2a44e6;
+            backdrop-filter: blur(8px);
+            color: #ffdd99;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            border: 1px solid #ffbc6e;
+            z-index: 1000;
+            animation: fadeInUp 0.3s ease;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateX(-50%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="about-container">
+    <div class="about-card">
+        <img class="avatar" src="images/avatar.png" alt="@BeiMing257头像" onerror="this.src='https://s3.bmp.ovh/2026/06/07/uxmqGfg7.png'">
+        <h1>@BeiMing257</h1>
+        <div class="subtitle">「 最高で最強！ 」</div>
+
+        <div class="section">
+            <h2>🧑 关于我</h2>
+            <p>其实也没有把这个网页传到什么让人熟知的地方。<br>
+            也并不擅长设计什么的，这个工具也我想了好久。<br>
+            没有才艺哦，不过我挺喜欢玩游戏的（？）</p>
+        </div>
+
+        <div class="section">
+            <h2>🌏 联系我</h2>
+            <div class="links">
+                <a href="https://qm.qq.com/q/tIqdZeEgGk" class="btn-link" target="_blank">🐧 QQ</a>
+                <button class="btn-link" id="copyEmailBtn">📧 邮箱：3075404772@qq.com</button>
+                <a href="https://space.bilibili.com/673831154?spm_id_from=333.1007.0.0" class="btn-link" target="_blank">📺 Bilibili</a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="index.html" class="back-link">← 返回随机工具</a>
+        </div>
+    </div>
+    <footer>都是凛拓川干的！ ©2010-现在 禁止采集数据和转载商业化</footer>
+</div>
+
+<script>
+    // 通用的复制函数（带 fallback）
+    function copyToClipboard(text, successMsg) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(successMsg || '已复制');
+            }).catch(() => {
+                fallbackCopy(text, successMsg);
+            });
+        } else {
+            fallbackCopy(text, successMsg);
+        }
+    }
+
+    function fallbackCopy(text, successMsg) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                showToast(successMsg || '已复制');
+            } else {
+                showToast('复制失败，请手动复制');
+            }
+        } catch (err) {
+            showToast('复制失败，请手动复制');
+        }
+        document.body.removeChild(textarea);
+    }
+
+    function showToast(msg) {
+        const existing = document.querySelector('.toast-tip');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = 'toast-tip';
+        toast.innerText = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    // 绑定邮箱复制按钮
+    const emailBtn = document.getElementById('copyEmailBtn');
+    if (emailBtn) {
+        emailBtn.addEventListener('click', () => {
+            copyToClipboard('3075404772@qq.com', '📧 邮箱已复制');
+        });
+    }
+</script>
+</body>
+</html>
