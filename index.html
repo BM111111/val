@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Lin's valrandom | 今天真的很高兴。</title>
+    <title>Lin's valrandom | 随机挑战</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
@@ -53,6 +54,10 @@
             color: #ffdd99;
             letter-spacing: 0.5px;
         }
+        .author-corner a:hover .author-name span {
+            color: rgb(64, 194, 246);
+            transition: color 0.2s ease;
+        }
         .author-name span {
             font-weight: 700;
             color: #ffbc6e;
@@ -75,7 +80,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://s3.bmp.ovh/2026/06/07/wekMHuke.jpg');
+            background-image: url('images/bg.jpg');
             background-size: cover;
             background-position: center center;
             filter: brightness(0.85);
@@ -601,8 +606,10 @@
 <body>
 <div class="container">
     <div class="author-corner">
-        <img class="author-avatar" src="https://s3.bmp.ovh/2026/06/07/uxmqGfg7.png" alt="avatar">
-        <div class="author-name">📌 <span>@BeiMing257</span></div>
+        <a href="aboutme.html" title="进入关于作者" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+            <img class="author-avatar" src="images/avatar.png" alt="avatar">
+            <div class="author-name">📌 <span>@BeiMing257</span></div>
+        </a>
     </div>
 
     <div class="hero-banner">
@@ -732,6 +739,10 @@
         <button id="saveCustomBtn">保存</button>
         <button id="closeCustomBtn" style="background:#3c4b6e; margin-top:0.5rem;">取消</button>
         <hr style="margin:1rem 0; border-color:#4a5c7c;">
+        <div style="display: flex; gap: 0.8rem; margin: 0.5rem 0 1rem;">
+            <button id="exportCustomBtn" style="background: #2a554b; flex:1;">📤 导出</button>
+            <button id="importCustomBtn" style="background: #5f4790; flex:1;">📥 导入</button>
+        </div>
         <h4>📋 已有自定义</h4>
         <div id="customList" style="max-height:150px; overflow-y:auto; font-size:0.8rem;"></div>
     </div>
@@ -843,26 +854,37 @@
     }
     function renderCustomList() {
         const container = document.getElementById("customList");
-        if(!container) return;
-        if(customChallenges.length===0) {
-            container.innerHTML = "<div style='color:#8e9fc3;'>暂无自定义挑战</div>";
+        if (!container) return;
+        if (customChallenges.length === 0) {
+            container.innerHTML = "<div style='color:#8e9fc3; text-align:center;'>暂无自定义挑战</div>";
             return;
         }
         let html = "";
         customChallenges.forEach((ch, idx) => {
-            html += `<div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
-                        <span style="flex:1;">${ch.name} (${ch.difficulty})</span>
-                        <button class="btn-icon" data-delidx="${idx}">🗑️</button>
-                    </div>`;
+            html += `
+            <div class="custom-challenge-item" style="background: #0f1424; border-radius: 0.8rem; padding: 0.5rem 0.8rem; margin-bottom: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="font-weight: bold; color: #ffdd99;">${escapeHtml(ch.name)}</span>
+                        <span style="font-size: 0.7rem; background: #3a3f5e; padding: 0.1rem 0.5rem; border-radius: 1rem; color: #ffbc6e;">${escapeHtml(ch.difficulty)}</span>
+                    </div>
+                    <button class="btn-icon del-custom-btn" data-delidx="${idx}" style="font-size: 0.8rem; padding: 0.2rem 0.6rem;">🗑️ 删除</button>
+                </div>
+                <div style="font-size: 0.7rem; color: #cbd5e6; margin-top: 0.3rem; word-break: break-word;">
+                    ${escapeHtml(ch.desc)}
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+    // 重新绑定删除事件
+    document.querySelectorAll(".del-custom-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const idx = parseInt(btn.getAttribute("data-delidx"));
+            deleteCustomChallenge(idx);
         });
-        container.innerHTML = html;
-        document.querySelectorAll("[data-delidx]").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                const idx = parseInt(btn.getAttribute("data-delidx"));
-                deleteCustomChallenge(idx);
-            });
-        });
-    }
+    });
+}
 
     function getFullChallengeDB() {
         return [...BASE_CHALLENGES, ...customChallenges];
@@ -1431,6 +1453,8 @@
         addBroadcastMessage(msg);
         broadcastToRoom(msg);
     };
+    document.getElementById("exportCustomBtn")?.addEventListener("click", exportCustomChallenges);
+    document.getElementById("importCustomBtn")?.addEventListener("click", triggerImport);
     customModal.onclick = (e) => { if(e.target === customModal) customModal.style.display = "none"; };
 
     const mottoList = ["I know I'm STILL SHINING","存档 读档 升级 这就是人生","情绪总被左右，好像忘记了什么","战斗力已经拉满，但还是忘了什么","Dizzy問題とかどうする？点Pとかどうする？","最高で最強！","加强霓虹！！！！！！！！！！","没关系的错就错吧"];
@@ -1446,6 +1470,72 @@
     renderHistory();
     renderFavourites();
     generateSimple(5);
+    // ========== 导出/导入自定义挑战 ==========
+function exportCustomChallenges() {
+    if (!customChallenges.length) {
+        alert("暂无自定义挑战，请先添加。");
+        return;
+    }
+    const dataStr = JSON.stringify(customChallenges, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "val_custom_challenges.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    if (typeof addBroadcastMessage === "function") addBroadcastMessage("📤 已导出自定义挑战");
+}
+
+let importFileInput = null;
+function importCustomChallenges(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const imported = JSON.parse(e.target.result);
+            if (!Array.isArray(imported)) throw new Error("格式错误");
+            for (let ch of imported) {
+                if (!ch.name || !ch.desc || !ch.difficulty) {
+                    alert("导入的文件格式不正确，缺少必要字段 (name, desc, difficulty)");
+                    return;
+                }
+            }
+            const choice = confirm("导入自定义挑战：\n点击「确定」将合并（保留原有，新增不重复）\n点击「取消」将完全替换现有自定义挑战");
+            if (choice) {
+                const existingNames = new Set(customChallenges.map(c => c.name));
+                const newOnes = imported.filter(c => !existingNames.has(c.name));
+                customChallenges.push(...newOnes);
+                alert(`已合并 ${newOnes.length} 条新挑战，原有保留。`);
+            } else {
+                customChallenges = imported;
+                alert(`已替换所有自定义挑战，共 ${imported.length} 条。`);
+            }
+            saveCustom();          // 保存到 localStorage
+            renderCustomList();    // 刷新模态框内的列表
+            if (typeof addBroadcastMessage === "function") addBroadcastMessage("📥 自定义挑战已导入");
+        } catch(err) {
+            alert("导入失败：文件内容不是有效的 JSON 格式");
+        }
+    };
+    reader.readAsText(file);
+}
+
+function triggerImport() {
+    if (importFileInput) importFileInput.remove();
+    importFileInput = document.createElement("input");
+    importFileInput.type = "file";
+    importFileInput.accept = "application/json";
+    importFileInput.onchange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            importCustomChallenges(e.target.files[0]);
+        }
+        importFileInput.remove();
+        importFileInput = null;
+    };
+    importFileInput.click();
+}
 </script>
 </body>
 </html>
