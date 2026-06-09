@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Lin's valrandom | 随机挑战</title>
+    <title>Lin's valrandom | 无畏契约随机网站。</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
@@ -359,6 +359,36 @@
             margin: 1rem 0;
             border: 1px solid #ffbc6e40;
         }
+        .message-banner {
+            background: rgba(30, 40, 60, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            margin: 0.5rem 0;
+            padding: 0.8rem 1rem;
+            border-left: 4px solid #ffbc6e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .message-banner .msg-text {
+            flex: 1;
+            color: #ffdd99;
+            font-size: 0.9rem;
+            word-break: break-word;
+        }
+        .message-banner .msg-close {
+            background: none;
+            border: none;
+            color: #ffbc6e;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 0.3rem;
+        }
+        .message-banner .msg-close:hover {
+            color: #ff7b4a;
+        }
         .broadcast-title {
             font-size: 0.8rem;
             color: #ffdd99;
@@ -601,6 +631,61 @@
             border: none;
             cursor: pointer;
         }
+        /* ===== 新增：消息条样式 ===== */
+    .message-banner {
+        background: rgba(30, 40, 60, 0.95);
+        backdrop-filter: blur(8px);
+        border-radius: 1rem;
+        margin: 0.5rem 0;
+        padding: 0.8rem 1rem;
+        border-left: 4px solid #ffbc6e;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .message-banner .msg-text {
+        flex: 1;
+        color: #ffdd99;
+        font-size: 0.9rem;
+        word-break: break-word;
+    }
+    .message-banner .msg-close {
+        background: none;
+        border: none;
+        color: #ffbc6e;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0 0.3rem;
+    }
+    .message-banner .msg-close:hover {
+        color: #ff7b4a;
+    }
+    .send-msg-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #1f2a44;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2rem;
+    }
+    .send-msg-group button {
+        background: #ff8c00;
+        border: none;
+           padding: 0.3rem 0.8rem;
+        border-radius: 2rem;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .send-msg-group label {
+        font-size: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+    }
     </style>
 </head>
 <body>
@@ -654,9 +739,14 @@
         <button id="randomNumberBtn" class="btn-tool">🎲 随机数</button>
         <button id="randomWeaponBtn" class="btn-tool">🔫 随机武器</button>
         <button id="randomHeroBtn" class="btn-tool">🦸 随机英雄</button>
+        <div class="send-msg-group">
+            <button id="sendMsgBtn">📢 发送消息</button>
+            <label><input type="checkbox" id="pinMsgCheckbox"> 🔝 置顶</label>
+        </div>
     </div>
 
     <!-- 广播面板（始终显示） -->
+    <div id="messageBannerContainer"></div>
     <div id="broadcastPanel" class="broadcast-panel">
         <div class="broadcast-title">📢 实时动态</div>
         <div id="broadcastList" class="broadcast-list">等待操作……</div>
@@ -1279,9 +1369,9 @@
             .subscribe();
     }
 
-    async function broadcastToRoom(message) {
+    async function broadcastToRoom(message, isPinned = false) {
         if (!currentRoomId) return;
-        const broadcast = { msg: message, time: Date.now(), id: Math.random() };
+        const broadcast = { msg: message, time: Date.now(), id: Math.random(), pinned: isPinned };
         lastBroadcastId = broadcast.id;
         const { data: roomData } = await supabaseClient
             .from('rooms')
@@ -1297,26 +1387,88 @@
                 broadcast: broadcast,
                 updated_at: new Date().toISOString()
             }, { onConflict: 'id' });
-        // 同时自己也显示广播（已在调用处 addBroadcastMessage，但避免重复，这里不重复添加）
     }
 
     // 监听广播变化（单独订阅广播）
     let broadcastChannel = null;
-    async function subscribeBroadcast(roomId) {
-        if (broadcastChannel) await broadcastChannel.unsubscribe();
-        broadcastChannel = supabaseClient
-            .channel(`broadcast-${roomId}`)
-            .on('postgres_changes', {
-                event: 'UPDATE',
-                schema: 'public',
-                table: 'rooms',
-                filter: `id=eq.${roomId}`
-            }, (payload) => {
-                if (payload.new && payload.new.broadcast && payload.new.broadcast.id !== lastBroadcastId) {
-                    addBroadcastMessage(payload.new.broadcast.msg);
+async function subscribeBroadcast(roomId) {
+    if (broadcastChannel) await broadcastChannel.unsubscribe();
+    broadcastChannel = supabaseClient
+        .channel(`broadcast-${roomId}`)
+        .on('postgres_changes', {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'rooms',
+            filter: `id=eq.${roomId}`
+        }, (payload) => {
+            if (payload.new && payload.new.broadcast && payload.new.broadcast.id !== lastBroadcastId) {
+                const { msg, pinned } = payload.new.broadcast;
+                // 显示消息条（置顶消息会长期显示，非置顶5秒消失）
+                if (typeof showMessageBanner === 'function') {
+                    showMessageBanner(msg, pinned === true, true);
                 }
-            })
-            .subscribe();
+                // 保留原有的“实时动态”列表记录
+                if (typeof addBroadcastMessage === 'function') {
+                    addBroadcastMessage(msg);
+                }
+            }
+        })
+        .subscribe();
+    }
+    let currentPinnedMessage = null;
+    function showMessageBanner(text, isPinned = false, canClose = true) {
+        const container = document.getElementById('messageBannerContainer');
+        if (!container) return;
+    
+        if (isPinned && currentPinnedMessage) {
+            currentPinnedMessage.remove();
+            currentPinnedMessage = null;
+        }
+    
+        const banner = document.createElement('div');
+        banner.className = 'message-banner';
+        const textSpan = document.createElement('span');
+        textSpan.className = 'msg-text';
+        textSpan.innerText = text;
+        banner.appendChild(textSpan);
+    
+        if (canClose) {
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'msg-close';
+            closeBtn.innerHTML = '✖';
+            closeBtn.onclick = () => {
+                banner.remove();
+                if (currentPinnedMessage === banner) currentPinnedMessage = null;
+            };
+            banner.appendChild(closeBtn);
+        }
+    
+        container.appendChild(banner);
+    
+        if (isPinned) {
+            currentPinnedMessage = banner;
+        } else {
+            setTimeout(() => {
+                if (banner.parentNode) banner.remove();
+            }, 5000);
+        }
+    }
+    async function sendMessageToRoom() {
+        if (!currentRoomId) {
+            showToast('请先加入房间');
+            return;
+        }
+        const msg = prompt('请输入要广播的消息：');
+        if (!msg || msg.trim() === '') return;
+        const isPinned = document.getElementById('pinMsgCheckbox').checked;
+        const fullMsg = `💬 ${msg.trim()}`;
+        await broadcastToRoom(fullMsg, isPinned);
+        // 本地立即显示（可选）
+        if (isPinned) {
+            showMessageBanner(fullMsg, true, true);
+        } else {
+            showMessageBanner(fullMsg, false, true);
+        }
     }
 
     async function joinRoom(roomId) {
@@ -1470,6 +1622,10 @@
     renderHistory();
     renderFavourites();
     generateSimple(5);
+    const sendMsgBtn = document.getElementById('sendMsgBtn');
+    if (sendMsgBtn) {
+        sendMsgBtn.onclick = sendMessageToRoom;
+    }
     // ========== 导出/导入自定义挑战 ==========
 function exportCustomChallenges() {
     if (!customChallenges.length) {
@@ -1535,6 +1691,63 @@ function triggerImport() {
         importFileInput = null;
     };
     importFileInput.click();
+}
+    // ========== 简单弹窗提示（美观版） ==========
+function showToast(message, duration = 3000) {
+    // 检查是否已有 toast 容器，没有则创建
+    let toastContainer = document.getElementById('custom-toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'custom-toast-container';
+        toastContainer.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+        `;
+        document.body.appendChild(toastContainer);
+    }
+
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        background: #1f2a44e6;
+        backdrop-filter: blur(8px);
+        color: #ffdd99;
+        padding: 8px 16px;
+        border-radius: 40px;
+        font-size: 0.8rem;
+        border: 1px solid #ffbc6e;
+        animation: fadeInUp 0.3s ease;
+        max-width: 80vw;
+        text-align: center;
+    `;
+    toast.innerText = message;
+    toastContainer.appendChild(toast);
+
+    // 添加动画（如果 CSS 中没有定义，则添加）
+    if (!document.querySelector('#toast-keyframes')) {
+        const style = document.createElement('style');
+        style.id = 'toast-keyframes';
+        style.textContent = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
 }
 </script>
 </body>
